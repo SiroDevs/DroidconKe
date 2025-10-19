@@ -7,11 +7,23 @@
 
 import Foundation
 
-struct FeedDTO: Codable {
+struct SessionDTO: Codable {
+    let remoteId: String?
+    let sessionDescription: String?
+    let sessionFormat: String?
+    let sessionLevel: String?
+    let slug: String?
     let title: String?
-    let body: String?
-    let topic: String?
-    let url: String?
-    let image: String?
-    let createdAt: String
+    let endDateTime: String?
+    let endTime: String?
+    let isBookmarked: Bool
+    let isKeynote: Bool
+    let isServiceSession: Bool
+    let sessionImage: String?
+    let startDateTime: String?
+    let startTime: String?
+    let rooms: String?
+    let speakers: String?
+    let startTimestamp: String?
+    let sessionImageUrl: String?
 }

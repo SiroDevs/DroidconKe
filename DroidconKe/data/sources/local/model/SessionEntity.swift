@@ -8,8 +8,9 @@
 import Foundation
 
 struct SessionEntity: Codable {
+    var id: Int = 0
     var remoteId: String?
-    var description: String?
+    var sessionDescription: String?
     var sessionFormat: String?
     var sessionLevel: String?
     var slug: String?
@@ -24,6 +25,6 @@ struct SessionEntity: Codable {
     var startTime: String?
     var rooms: String?
     var speakers: String?
-    var startTimestamp: Float?
+    var startTimestamp: String?
     var sessionImageUrl: String?
 }

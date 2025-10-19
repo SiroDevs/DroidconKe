@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SponsorEntity: Identifiable, Codable {
+struct SponsorEntity: Codable {
     var id: Int = 0
     var name: String?
     var tagline: String?

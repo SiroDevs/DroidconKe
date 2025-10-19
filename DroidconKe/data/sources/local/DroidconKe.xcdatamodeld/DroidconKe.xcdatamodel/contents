@@ -28,6 +28,7 @@
     <entity name="CDSession" representedClassName="CDSession" syncable="YES" codeGenerationType="class">
         <attribute name="endDateTime" optional="YES" attributeType="String"/>
         <attribute name="endTime" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="isBookmarked" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isKeynote" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isServiceSession" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -47,12 +48,14 @@
     <entity name="CDSpeaker" representedClassName="CDSpeaker" syncable="YES" codeGenerationType="class">
         <attribute name="avatar" optional="YES" attributeType="String"/>
         <attribute name="bio" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="tagline" optional="YES" attributeType="String"/>
         <attribute name="twitter" optional="YES" attributeType="String"/>
     </entity>
     <entity name="CDSponsor" representedClassName="CDSponsor" syncable="YES" codeGenerationType="class">
         <attribute name="createdAt" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="link" optional="YES" attributeType="String"/>
         <attribute name="logo" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>

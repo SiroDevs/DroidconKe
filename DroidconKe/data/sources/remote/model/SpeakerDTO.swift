@@ -8,10 +8,9 @@
 import Foundation
 
 struct SpeakerDTO: Codable {
-    let title: String?
-    let body: String?
-    let topic: String?
-    let url: String?
-    let image: String?
-    let createdAt: String
+    let name: String?
+    let tagline: String?
+    let bio: String?
+    let avatar: String?
+    let twitter: String?
 }

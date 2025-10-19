@@ -14,3 +14,7 @@ struct AppConstants {
     static let eventSlug = "droidconke-2024-974"
     static let orgSlug = "droidcon-ke-645"
 }
+
+struct PrefConstants {
+    static let installDate = "installDateKey"
+}

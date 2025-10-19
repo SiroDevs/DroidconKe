@@ -7,11 +7,14 @@
 
 import Foundation
 
-struct FeedDTO: Codable {
-    let title: String?
-    let body: String?
-    let topic: String?
-    let url: String?
-    let image: String?
+struct OrganizerDTO: Codable {
+    let name: String?
+    let tagline: String?
+    let link: String?
+    let type: String?
+    let photo: String?
+    let bio: String?
+    let twitterHandle: String?
+    let designation: String?
     let createdAt: String
 }
