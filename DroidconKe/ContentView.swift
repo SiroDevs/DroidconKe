@@ -15,7 +15,7 @@ struct ContentView: View {
     var body: some View {
         Group {
             if navigateToNextScreen {
-                HomeView()
+                MainView()
             } else {
                 SplashView()
                     .onAppear {

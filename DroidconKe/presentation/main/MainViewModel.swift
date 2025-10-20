@@ -1,5 +1,5 @@
 //
-//  HomeViewModel.swift
+//  MainViewModel.swift
 //  DroidconKe
 //
 //  Created by @sirodevs on 20/10/2025.
@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-final class HomeViewModel: ObservableObject {
+final class MainViewModel: ObservableObject {
     @Published var feeds: [FeedEntity] = []
     @Published var organizers: [OrganizerEntity] = []
     @Published var sessions: [SessionEntity] = []

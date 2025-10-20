@@ -58,19 +58,14 @@ struct DependencyMap {
             )
         }.inObjectScope(.container)
         
-        container.register(FeedRepoProtocol.self) { resolver in
-            FeedRepo(
-                apiService: resolver.resolve(ApiServiceProtocol.self)!,
-                feedDm: resolver.resolve(FeedDataManager.self)!,
-            )
-        }.inObjectScope(.container)
-        
         container.register(OrganizerRepoProtocol.self) { resolver in
             OrganizerRepo(
                 apiService: resolver.resolve(ApiServiceProtocol.self)!,
                 organizerDm: resolver.resolve(OrganizerDataManager.self)!,
             )
         }.inObjectScope(.container)
+        
+        container.register(PrefsRepoProtocol.self) { resolver in PrefsRepo() }.inObjectScope(.container)
         
         container.register(SessionRepoProtocol.self) { resolver in
             SessionRepo(
@@ -92,18 +87,16 @@ struct DependencyMap {
                 sponsorDm: resolver.resolve(SponsorDataManager.self)!,
             )
         }.inObjectScope(.container)
-        
-//
-//        container.register(MainViewModel.self) { resolver in
-//            MainViewModel(
-//                prefsRepo: resolver.resolve(PreferencesRepository.self)!,
-//                songbkRepo: resolver.resolve(SongBookRepositoryProtocol.self)!,
-//                listingRepo: resolver.resolve(ListingRepositoryProtocol.self)!,
-//                reviewRepo: resolver.resolve(ReviewReqRepositoryProtocol.self)!,
-//                subsRepo: resolver.resolve(SubscriptionRepositoryProtocol.self)!,
-//            )
-//        }.inObjectScope(.container)
-//
+
+        container.register(MainViewModel.self) { resolver in
+            MainViewModel(
+                feedRepo: resolver.resolve(FeedRepoProtocol.self)!,
+                organizerRepo: resolver.resolve(OrganizerRepoProtocol.self)!,
+                sessionRepo: resolver.resolve(SessionRepoProtocol.self)!,
+                speakerRepo: resolver.resolve(SpeakerRepoProtocol.self)!,
+            )
+        }.inObjectScope(.container)
+
     }
 }
 

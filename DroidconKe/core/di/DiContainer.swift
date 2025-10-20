@@ -30,13 +30,14 @@ final class DiContainer {
             { self.container.resolve(SessionDataManager.self) },
             { self.container.resolve(SpeakerDataManager.self) },
             { self.container.resolve(SponsorDataManager.self) },
-            { self.container.resolve(BookmarkRepo.self) },
-            { self.container.resolve(OrganizerRepo.self) },
+            { self.container.resolve(BookmarkRepoProtocol.self) },
+            { self.container.resolve(FeedRepoProtocol.self) },
+            { self.container.resolve(OrganizerRepoProtocol.self) },
             { self.container.resolve(PrefsRepo.self) },
-            { self.container.resolve(SessionRepo.self) },
-            { self.container.resolve(SpeakerRepo.self) },
-            { self.container.resolve(SponsorRepo.self) },
-//            { self.container.resolve(MainViewModel.self) },
+            { self.container.resolve(SessionRepoProtocol.self) },
+            { self.container.resolve(SpeakerRepoProtocol.self) },
+            { self.container.resolve(SponsorRepoProtocol.self) },
+            { self.container.resolve(MainViewModel.self) },
         ]
 
         for resolve in dependencies {
