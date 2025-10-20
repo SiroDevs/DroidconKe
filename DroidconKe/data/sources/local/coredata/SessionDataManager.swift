@@ -2,20 +2,20 @@
 //  SessionDataManager.swift
 //  DroidconKe
 //
-//  Created by @sirodevs on 20/10/2025.
+//  Created by @sirodevs on 19/10/2025.
 //
 
 import CoreData
 
 class SessionDataManager {
-    private let coreDataManager: CoreDataManager
+    private let cdManager: CoreDataManager
     
-    init(coreDataManager: CoreDataManager = .shared) {
-        self.coreDataManager = coreDataManager
+    init(cdManager: CoreDataManager = .shared) {
+        self.cdManager = cdManager
     }
     
     private var context: NSManagedObjectContext {
-        coreDataManager.viewContext
+        cdManager.viewContext
     }
     
     func saveSessions(_ sessions: [SessionEntity]) {

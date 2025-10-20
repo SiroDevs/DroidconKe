@@ -2,21 +2,21 @@
 //  BookmarkDataManager.swift
 //  DroidconKe
 //
-//  Created by @sirodevs on 20/10/2025.
+//  Created by @sirodevs on 19/10/2025.
 //
 
 import CoreData
 
 class BookmarkDataManager {
-    private let coreDataManager: CoreDataManager
+    private let cdManager: CoreDataManager
     
-    init(coreDataManager: CoreDataManager = CoreDataManager.shared) {
-        self.coreDataManager = coreDataManager
+    init(cdManager: CoreDataManager = CoreDataManager.shared) {
+        self.cdManager = cdManager
     }
     
     // Access to the view context
     private var context: NSManagedObjectContext {
-        return coreDataManager.viewContext
+        return cdManager.viewContext
     }
     
     // Save records to Core Data

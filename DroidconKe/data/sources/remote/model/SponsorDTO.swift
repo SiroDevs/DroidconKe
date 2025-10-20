@@ -2,7 +2,7 @@
 //  SponsorDTO.swift
 //  DroidconKe
 //
-//  Created by @sirodevs on 20/10/2025.
+//  Created by @sirodevs on 19/10/2025.
 //
 
 import Foundation
