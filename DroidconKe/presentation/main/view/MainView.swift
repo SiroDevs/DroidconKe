@@ -13,21 +13,9 @@ struct MainView: View {
     }()
     
     var body: some View {
-        TabView {
-            HomeTab(viewModel: viewModel)
-                .tabItem {
-                    Label("Tafuta", systemImage: "magnifyingglass")
-                }
-            
-            FeedTab(viewModel: viewModel)
-                .tabItem {
-                    Label("Vipendwa", systemImage: "heart.fill")
-                }
-        }
-        .environment(\.horizontalSizeClass, .compact)
-//        stateContent
-//            .edgesIgnoringSafeArea(.bottom)
-//            .task { await viewModel.syncData() }
+        stateContent
+            .edgesIgnoringSafeArea(.bottom)
+            .task { await viewModel.syncData() }
     }
     
     @ViewBuilder
