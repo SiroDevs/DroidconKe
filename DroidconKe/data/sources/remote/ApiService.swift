@@ -24,7 +24,7 @@ class ApiService: ApiServiceProtocol {
         }
         
         var request = URLRequest(url: url)
-        request.httpMethod = endpoint.method.rawValue
+        request.httpMethod = "GET"
         request.allHTTPHeaderFields = endpoint.headers
         
         if let body = endpoint.body {
@@ -33,10 +33,13 @@ class ApiService: ApiServiceProtocol {
         
         let (data, response) = try await session.data(for: request)
         
+        print("Api Fetched: \(String(describing: endpoint.url))")
+        print("Api Headers: \(String(describing: endpoint.headers))")
         guard let httpResponse = response as? HTTPURLResponse else {
             throw ApiError.invalidResponse
         }
         
+        print("Api Response: [\(httpResponse.statusCode)] \(data)")
         switch httpResponse.statusCode {
             case 200...299:
                 break
@@ -136,23 +139,15 @@ struct ErrorDetails: Decodable {
 }
 
 extension ApiEndpoint {
-    var method: HTTPMethod {
-        return .get
-    }
-    
     var headers: [String: String]? {
-        return ["Content-Type": "application/json"]
+        return [
+            "Accept": "application/json",
+            "Api-Authorization-Key": "droidconKe-2020",
+            "Authorization": "Bearer \(AppSecrets.bearer_token)",
+        ]
     }
     
     var body: Encodable? {
         return nil
     }
-}
-
-enum HTTPMethod: String {
-    case get = "GET"
-    case post = "POST"
-    case put = "PUT"
-    case patch = "PATCH"
-    case delete = "DELETE"
 }

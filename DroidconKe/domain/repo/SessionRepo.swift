@@ -9,7 +9,7 @@ protocol SessionRepoProtocol {
     func fetchRemoteData() async throws -> [SessionEntity]
     func fetchLocalData() async throws -> [SessionEntity]
     func saveSessions(_ sessions: [SessionEntity])
-    func deleteLocalData()
+    func clearAllSessions()
 }
 
 class SessionRepo: SessionRepoProtocol {
@@ -25,7 +25,7 @@ class SessionRepo: SessionRepoProtocol {
     }
     
     func fetchRemoteData() async throws -> [SessionEntity] {
-        return try await apiService.fetch(endpoint: .sessions)
+        return try await apiService.fetch(endpoint: .sessions(eventSlug: ""))
     }
     
     func fetchLocalData() -> [SessionEntity] {
@@ -37,7 +37,7 @@ class SessionRepo: SessionRepoProtocol {
         sessionDm.saveSessions(sessions)
     }
     
-    func deleteLocalData() {
+    func clearAllSessions() {
         sessionDm.deleteAllSessions()
     }
 }

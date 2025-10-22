@@ -8,7 +8,7 @@
 import Foundation
 
 protocol PrefsRepoProtocol {
-    var installDate: Date { get set }
+    var eventType: String { get set }
     
     func resetPrefs()
 }
@@ -20,9 +20,9 @@ class PrefsRepo: PrefsRepoProtocol {
         self.userDefaults = userDefaults
     }
     
-    var installDate: Date {
-        get { userDefaults.object(forKey: PrefConstants.installDate) as? Date ?? Date() }
-        set { userDefaults.set(newValue, forKey: PrefConstants.installDate) }
+    var eventType: String {
+        get { userDefaults.string(forKey: PrefConstants.eventType) ?? PrefConstants.defaultEvent }
+        set { userDefaults.set(newValue, forKey: PrefConstants.eventType) }
     }
     
     func resetPrefs() {

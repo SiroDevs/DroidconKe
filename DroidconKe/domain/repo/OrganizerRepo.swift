@@ -9,7 +9,7 @@ protocol OrganizerRepoProtocol {
     func fetchRemoteData() async throws -> [OrganizerEntity]
     func fetchLocalData() async throws -> [OrganizerEntity]
     func saveOrganizers(_ organizers: [OrganizerEntity])
-    func deleteLocalData()
+    func clearAllOrganizers()
 }
 
 class OrganizerRepo: OrganizerRepoProtocol {
@@ -25,7 +25,7 @@ class OrganizerRepo: OrganizerRepoProtocol {
     }
     
     func fetchRemoteData() async throws -> [OrganizerEntity] {
-        return try await apiService.fetch(endpoint: .organizers(type: "", page: 1, perPage: 100))
+        return try await apiService.fetch(endpoint: .organizers(orgSlug: "", type: "", page: 1, perPage: 100))
     }
     
     func fetchLocalData() -> [OrganizerEntity] {
@@ -37,7 +37,7 @@ class OrganizerRepo: OrganizerRepoProtocol {
         organizerDm.saveOrganizers(organizers)
     }
     
-    func deleteLocalData() {
+    func clearAllOrganizers() {
         organizerDm.deleteAllOrganizers()
     }
 }

@@ -45,16 +45,16 @@ final class MainViewModel: ObservableObject {
         }
 
         do {
-            let fetchedFeeds = try await feedRepo.fetchRemoteData()
-            let fetchedOrganizers = try await organizerRepo.fetchRemoteData()
-            let fetchedSessions = try await sessionRepo.fetchRemoteData()
-            let fetchedSpeakers = try await speakerRepo.fetchRemoteData()
+//            let remoteFeeds = try await feedRepo.fetchRemoteData()
+//            let remoteOrganizers = try await organizerRepo.fetchRemoteData()
+//            let remoteSessions = try await sessionRepo.fetchRemoteData()
+            let remoteSpeakers = try await speakerRepo.fetchRemoteSpeakers()
 
             await MainActor.run {
-                self.feeds = fetchedFeeds
-                self.organizers = fetchedOrganizers
-                self.sessions = fetchedSessions
-                self.speakers = fetchedSpeakers
+//                self.feeds = remoteFeeds
+//                self.organizers = remoteOrganizers
+//                self.sessions = remoteSessions
+                self.speakers = remoteSpeakers.sorted { $0.name < $1.name }
             }
             
             print("Now saving data")
@@ -69,14 +69,29 @@ final class MainViewModel: ObservableObject {
             await MainActor.run {
                 self.uiState = .error("Failed: \(error.localizedDescription)")
             }
+            if speakers.isEmpty {
+                fetchSpeakersLocally()
+            }
+
             print("❌ Syncying failed: \(error)")
         }
     }
 
+    private func fetchSpeakersLocally() {
+        do {
+            let localSpeakers = try speakerRepo.fetchLocalSpeakers()
+            if !localSpeakers.isEmpty {
+                self.speakers = localSpeakers
+            }
+        } catch {
+            print("❌ Fetching speakers failed: \(error)")
+        }
+    }
+    
     private func saveData() async throws {
-        feedRepo.saveFeeds(feeds)
-        organizerRepo.saveOrganizers(organizers)
-        sessionRepo.saveSessions(sessions)
+//        feedRepo.saveFeeds(feeds)
+//        organizerRepo.saveOrganizers(organizers)
+//        sessionRepo.saveSessions(sessions)
         speakerRepo.saveSpeakers(speakers)
     }
 

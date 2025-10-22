@@ -22,7 +22,7 @@ class SpeakerDataManager {
         context.perform {
             do {
                 for entity in speakers {
-                    let cd = self.findOrCreateCd(by: entity.id)
+                    let cd = self.findOrCreateCd(by: entity.name)
                     SpeakerMapper.entityToCd(entity, cd)
                 }
                 try self.context.save()
@@ -36,7 +36,7 @@ class SpeakerDataManager {
     func saveSpeaker(_ entity: SpeakerEntity) {
         context.perform {
             do {
-                let cd = self.findOrCreateCd(by: entity.id)
+                let cd = self.findOrCreateCd(by: entity.name)
                 SpeakerMapper.entityToCd(entity, cd)
                 try self.context.save()
             } catch {
@@ -55,23 +55,23 @@ class SpeakerDataManager {
         }
     }
     
-    func fetchSpeaker(withId id: Int) -> SpeakerEntity? {
-        fetchCd(by: id).map(SpeakerMapper.cdToEntity(_:))
+    func fetchSpeaker(withId name: String) -> SpeakerEntity? {
+        fetchCd(by: name).map(SpeakerMapper.cdToEntity(_:))
     }
 
-    private func fetchCd(by id: Int) -> CDSpeaker? {
+    private func fetchCd(by name: String) -> CDSpeaker? {
         let request: NSFetchRequest<CDSpeaker> = CDSpeaker.fetchRequest()
-        request.predicate = NSPredicate(format: "id == %d", id)
+        request.predicate = NSPredicate(format: "name == %d", name)
         request.fetchLimit = 1
         return try? context.fetch(request).first
     }
 
-    private func findOrCreateCd(by id: Int) -> CDSpeaker {
-        if let existing = fetchCd(by: id) {
+    private func findOrCreateCd(by name: String) -> CDSpeaker {
+        if let existing = fetchCd(by: name) {
             return existing
         } else {
             let new = CDSpeaker(context: context)
-            new.id = Int32(id)
+            new.name = name
             return new
         }
     }

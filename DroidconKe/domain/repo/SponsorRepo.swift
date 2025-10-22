@@ -9,7 +9,7 @@ protocol SponsorRepoProtocol {
     func fetchRemoteData() async throws -> [SponsorEntity]
     func fetchLocalData() async throws -> [SponsorEntity]
     func saveSponsors(_ sponsors: [SponsorEntity])
-    func deleteLocalData()
+    func clearAllSponsors()
 }
 
 class SponsorRepo: SponsorRepoProtocol {
@@ -25,7 +25,7 @@ class SponsorRepo: SponsorRepoProtocol {
     }
     
     func fetchRemoteData() async throws -> [SponsorEntity] {
-        return try await apiService.fetch(endpoint: .sponsors(perPage: 100))
+        return try await apiService.fetch(endpoint: .sponsors(orgSlug: "", perPage: 100))
     }
     
     func fetchLocalData() -> [SponsorEntity] {
@@ -37,7 +37,7 @@ class SponsorRepo: SponsorRepoProtocol {
         sponsorDm.saveSponsors(sponsors)
     }
     
-    func deleteLocalData() {
+    func clearAllSponsors() {
         sponsorDm.deleteAllSponsors()
     }
 }

@@ -7,11 +7,24 @@
 
 import Foundation
 
-struct SpeakerEntity: Identifiable, Codable {
-    var id: Int = 0
-    var name: String?
-    var tagline: String?
-    var bio: String?
-    var avatar: String?
-    var twitter: String?
+struct SpeakerEntity: Identifiable, Equatable {
+    let id = UUID()
+    let name: String
+    let tagline: String
+    let biography: String
+    let avatar: String
+    let twitter: String?
+    let linkedin: String?
+    let blog: String?
+    let companyWebsite: String?
+    let isDroidcon: Bool
+    
+    var twitterHandle: String? {
+        guard let twitter = twitter else { return nil }
+        return twitter.components(separatedBy: "/").last
+    }
+    
+    var hasSocialLinks: Bool {
+        twitter != nil || linkedin != nil || blog != nil || companyWebsite != nil
+    }
 }

@@ -8,40 +8,54 @@
 struct SpeakerMapper {
     static func cdToEntity(_ cd: CDSpeaker) -> SpeakerEntity {
         SpeakerEntity(
-//            id: Int(cd.id),
             name: cd.name ?? "",
             tagline: cd.tagline ?? "",
-            bio: cd.bio ?? "",
+            biography: cd.biography ?? "",
             avatar: cd.avatar ?? "",
-            twitter: cd.twitter ?? ""
+            twitter: cd.twitter,
+            linkedin: cd.linkedin,
+            blog: cd.blog,
+            companyWebsite: cd.companyWebsite,
+            isDroidcon: cd.isDroidcon
         )
     }
     
     static func entityToCd(_ entity: SpeakerEntity, _ cd: CDSpeaker) {
-//        cd.id = Int32(entity.id)
-        cd.name = entity.name ?? ""
-        cd.tagline = entity.tagline ?? ""
-        cd.tagline = entity.tagline ?? ""
-        cd.avatar = entity.avatar ?? ""
+        cd.name = entity.name
+        cd.tagline = entity.tagline
+        cd.biography = entity.biography
+        cd.avatar = entity.avatar
         cd.twitter = entity.twitter
+        cd.linkedin = entity.linkedin
+        cd.blog = entity.blog
+        cd.companyWebsite = entity.companyWebsite
+        cd.isDroidcon = entity.isDroidcon
     }
     
-    static func dtoToEntity(_ dto: SpeakerDTO) -> SpeakerEntity {
+    static func dtoToEntity(_ dto: SpeakerDTO, isDroidcon: Bool = true) -> SpeakerEntity {
         SpeakerEntity(
-            name: dto.name ?? "",
-            tagline: dto.tagline ?? "",
-            bio: dto.bio ?? "",
-            avatar: dto.avatar ?? "",
-            twitter: dto.twitter
+            name: dto.name,
+            tagline: dto.tagline,
+            biography: dto.biography,
+            avatar: dto.avatar,
+            twitter: dto.twitter,
+            linkedin: dto.linkedin,
+            blog: dto.blog,
+            companyWebsite: dto.companyWebsite,
+            isDroidcon: isDroidcon
         )
     }
     
     static func entityToDto(_ entity: SpeakerEntity) -> SpeakerDTO {
-        SpeakerDTO(            name: entity.name ?? "",
-            tagline: entity.tagline ?? "",
-            bio: entity.bio ?? "",
-            avatar: entity.avatar ?? "",
-            twitter: entity.twitter
+        SpeakerDTO(
+            name: entity.name,
+            tagline: entity.tagline,
+            biography: entity.biography,
+            avatar: entity.avatar,
+            twitter: entity.twitter,
+            linkedin: entity.twitter,
+            blog: entity.twitter,
+            companyWebsite: entity.twitter
         )
     }
 }

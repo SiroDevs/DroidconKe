@@ -9,7 +9,7 @@ protocol FeedRepoProtocol {
     func fetchRemoteData() async throws -> [FeedEntity]
     func fetchLocalData() async throws -> [FeedEntity]
     func saveFeeds(_ feeds: [FeedEntity])
-    func deleteLocalData()
+    func clearAllFeeds()
 }
 
 class FeedRepo: FeedRepoProtocol {
@@ -25,7 +25,7 @@ class FeedRepo: FeedRepoProtocol {
     }
     
     func fetchRemoteData() async throws -> [FeedEntity] {
-        return try await apiService.fetch(endpoint: .feeds(page: 1, perPage: 100))
+        return try await apiService.fetch(endpoint: .feeds(eventSlug: "", page: 1, perPage: 100))
     }
     
     func fetchLocalData() -> [FeedEntity] {
@@ -37,7 +37,8 @@ class FeedRepo: FeedRepoProtocol {
         feedDm.saveFeeds(feeds)
     }
     
-    func deleteLocalData() {
+    func clearAllFeeds() {
         feedDm.deleteAllFeeds()
     }
 }
+ 

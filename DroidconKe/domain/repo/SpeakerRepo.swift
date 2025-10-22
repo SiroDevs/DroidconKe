@@ -6,10 +6,10 @@
 //
 
 protocol SpeakerRepoProtocol {
-    func fetchRemoteData() async throws -> [SpeakerEntity]
-    func fetchLocalData() async throws -> [SpeakerEntity]
+    func fetchRemoteSpeakers() async throws -> [SpeakerEntity]
+    func fetchLocalSpeakers() throws -> [SpeakerEntity]
     func saveSpeakers(_ speakers: [SpeakerEntity])
-    func deleteLocalData()
+    func clearAllSpeakers()
 }
 
 class SpeakerRepo: SpeakerRepoProtocol {
@@ -24,11 +24,16 @@ class SpeakerRepo: SpeakerRepoProtocol {
         self.speakerDm = speakerDm
     }
     
-    func fetchRemoteData() async throws -> [SpeakerEntity] {
-        return try await apiService.fetch(endpoint: .speakers(perPage: 100))
+    func fetchRemoteSpeakers() async throws -> [SpeakerEntity] {
+        let response: SpeakersRespDTO = try await apiService.fetch(
+            endpoint: .speakers(eventSlug: AppSecrets.droidcon_slug, perPage: 100)
+        )
+        return response.data.map { dto in
+            SpeakerMapper.dtoToEntity(dto, isDroidcon: true)
+        }
     }
-    
-    func fetchLocalData() -> [SpeakerEntity] {
+
+    func fetchLocalSpeakers() -> [SpeakerEntity] {
         let speakers = speakerDm.fetchSpeakers()
         return speakers.sorted { $0.id < $1.id }
     }
@@ -37,7 +42,7 @@ class SpeakerRepo: SpeakerRepoProtocol {
         speakerDm.saveSpeakers(speakers)
     }
     
-    func deleteLocalData() {
+    func clearAllSpeakers() {
         speakerDm.deleteAllSpeakers()
     }
 }

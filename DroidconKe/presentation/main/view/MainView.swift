@@ -33,7 +33,7 @@ struct MainView: View {
                 
                 FeedTab(viewModel: viewModel)
                     .tabItem {
-                        Label("Feeds", systemImage: "heart.fill")
+                        Label("sessions", systemImage: "heart.fill")
                     }
             }
             .environment(\.horizontalSizeClass, .compact)
