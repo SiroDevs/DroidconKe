@@ -11,54 +11,160 @@ struct HomeTab: View {
     @ObservedObject var viewModel: MainViewModel
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    // Header
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Droidcon")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                        
-                        Text("Freshback")
-                            .font(.title2)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding(.horizontal)
-                    
-                    // Conference Description
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Droidcon is a global conference focused on the engineering of Android applications. Droidcon provides a forum for developers to network with other developers, share techniques, announce apps and products, and to learn and teach.")
-                            .font(.body)
-                            .foregroundColor(.primary)
-                        
-                        Text("It will have workshops and codelabs focused on the building of Android applications and will have participants an excellent chance to learn about the local Android development ecosystem, opportunities and services as well as meet the engineers and companies who work on them.")
-                            .font(.body)
-                            .foregroundColor(.primary)
-                    }
-                    .padding(.horizontal)
-                    
-                    // Organizing Team Section
-                    VStack(alignment: .leading, spacing: 16) {
-                        Text("Organizing Team")
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                            .padding(.horizontal)
-                        
-                        LazyVGrid(columns: [
-                            GridItem(.flexible()),
-                            GridItem(.flexible())
-                        ], spacing: 16) {
-                            ForEach(0..<9) { index in
-                                TeamMemberCard(index: index)
-                            }
-                        }
-                        .padding(.horizontal)
-                    }
+                LazyVStack(alignment: .leading, spacing: 24) {
+                    headerSection
+                    featuredSessionsSection
+                    speakersSection
+//                    sponsorsSection
+                    organizedBySection
                 }
-                .padding(.vertical)
+                .padding(.horizontal)
             }
-            .navigationBarHidden(true)
+            .navigationTitle("DroiconKe")
+            .toolbarBackground(.regularMaterial, for: .navigationBar)
         }
     }
+    
+    private var headerSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("droidconke")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(.primary)
+                    
+                    Text("Feedback")
+                        .font(.headline)
+                        .foregroundColor(.secondary)
+                }
+                
+                Spacer()
+                
+                Image(systemName: "bell.fill")
+                    .font(.title3)
+                    .foregroundColor(.gray)
+            }
+            
+            Rectangle()
+                .fill(Color.gray.opacity(0.3))
+                .frame(height: 1)
+        }
+    }
+    
+    private var featuredSessionsSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Text("Sessions")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                
+                Spacer()
+                
+                Button("View All") {
+                    // Navigate to all sessions
+                }
+                .font(.subheadline)
+                .foregroundColor(.blue)
+            }
+            
+            // Featured Sessions ScrollView
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 16) {
+                    ForEach(featuredSessions.prefix(3)) { session in
+                        FeaturedSessionCard(session: session)
+                    }
+                }
+            }
+        }
+    }
+    
+    private var speakersSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            // Section Header
+            HStack {
+                Text("Speakers")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                
+                Spacer()
+                
+                Button("View All") {
+                    // Navigate to all speakers
+                }
+                .font(.subheadline)
+                .foregroundColor(.blue)
+            }
+            
+//            LazyVGrid(columns: [
+//                GridItem(.flexible()),
+//                GridItem(.flexible()),
+//                GridItem(.flexible())
+//            ], spacing: 20) {
+//                ForEach(featuredSpeakers.prefix(6)) { speaker in
+//                    SpeakerCard(speaker: speaker)
+//                }
+//            }
+        }
+    }
+    
+//    private var sponsorsSection: some View {
+//        VStack(alignment: .leading, spacing: 16) {
+//            Text("Sponsors")
+//                .font(.title2)
+//                .fontWeight(.bold)
+//            
+//            LazyVGrid(columns: [
+//                GridItem(.flexible()),
+//                GridItem(.flexible())
+//            ], spacing: 20) {
+//                ForEach(sponsors) { sponsor in
+//                    SponsorCard(sponsor: sponsor)
+//                }
+//            }
+//        }
+//    }
+    
+    private var organizedBySection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Organised by:")
+                .font(.headline)
+                .foregroundColor(.secondary)
+            
+            HStack {
+                Image(systemName: "k.circle.fill")
+                    .font(.largeTitle)
+                    .foregroundColor(.blue)
+                
+                Text("Android Kenya Community")
+                    .font(.subheadline)
+                    .foregroundColor(.primary)
+                
+                Spacer()
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
+        }
+    }
+    
+    private var featuredSessions: [SessionEntity] {
+        viewModel.sessions.filter { $0.isKeynote || $0.isServiceSession }
+            .sorted { $0.id < $1.id }
+    }
+    
+//    private var featuredSpeakers: [SpeakerEntity] {
+//        let allSpeakers = viewModel.sessions.flatMap { $0.speakers }
+//        return Array(Set(allSpeakers)).sorted { $0.name < $1.name }
+//    }
+//    
+//    private var sponsors: [SponsorEntity] {
+//        return [
+//            SponsorEntity(id: 1, name: "Google", logo: "google-logo", tier: "platinum"),
+//            SponsorEntity(id: 2, name: "Andela", logo: "andela-logo", tier: "gold"),
+//            SponsorEntity(id: 3, name: "HOVER", logo: "hover-logo", tier: "silver")
+//        ]
+//    }
 }

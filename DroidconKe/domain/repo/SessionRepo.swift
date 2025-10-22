@@ -46,7 +46,6 @@ class SessionRepo: SessionRepoProtocol {
     func fetchLocalSessions() -> [SessionEntity] {
         let sessions = sessionDm.fetchSessions()
         return sessions.sorted {
-            // Sort by date first, then by start time
             if $0.date == $1.date {
                 return $0.startTime < $1.startTime
             }

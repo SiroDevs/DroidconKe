@@ -52,7 +52,7 @@ struct MainView: View {
                         Text("About")
                     }
             }
-            .accentColor(.blue) // You can change this to match your brand
+            .accentColor(.blue)
             .environment(\.horizontalSizeClass, .compact)
             
         case .error(let msg):
@@ -67,4 +67,3 @@ struct MainView: View {
         }
     }
 }
-

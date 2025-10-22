@@ -6,13 +6,11 @@
 //
 
 import Foundation
-import SwiftUI
 
 final class MainViewModel: ObservableObject {
     @Published var feeds: [FeedEntity] = []
     @Published var organizers: [OrganizerEntity] = []
     @Published var sessions: [SessionEntity] = []
-    @Published var speakers: [SpeakerEntity] = []
 
     @Published var uiState: UiState = .idle
 
@@ -45,19 +43,12 @@ final class MainViewModel: ObservableObject {
         }
 
         do {
-//            let remoteFeeds = try await feedRepo.fetchRemoteData()
-//            let remoteOrganizers = try await organizerRepo.fetchRemoteData()
-//            let remoteSessions = try await sessionRepo.fetchRemoteData()
-            let remoteSpeakers = try await speakerRepo.fetchRemoteSpeakers()
+            let remoteSessions = try await sessionRepo.fetchRemoteSessions()
 
             await MainActor.run {
-//                self.feeds = remoteFeeds
-//                self.organizers = remoteOrganizers
-//                self.sessions = remoteSessions
-                self.speakers = remoteSpeakers.sorted { $0.name < $1.name }
+                self.sessions = remoteSessions.sorted { $0.id < $1.id }
             }
             
-            print("Now saving data")
             try await saveData()
 
             await MainActor.run {
@@ -69,30 +60,25 @@ final class MainViewModel: ObservableObject {
             await MainActor.run {
                 self.uiState = .error("Failed: \(error.localizedDescription)")
             }
-            if speakers.isEmpty {
-                fetchSpeakersLocally()
+            if sessions.isEmpty {
+                fetchSessionsLocally()
             }
 
-            print("❌ Syncying failed: \(error)")
+            print("❌ Syncing failed: \(error)")
         }
     }
 
-    private func fetchSpeakersLocally() {
-        do {
-            let localSpeakers = try speakerRepo.fetchLocalSpeakers()
-            if !localSpeakers.isEmpty {
-                self.speakers = localSpeakers
-            }
-        } catch {
-            print("❌ Fetching speakers failed: \(error)")
+    private func fetchSessionsLocally() {
+        let localSessions = sessionRepo.fetchLocalSessions()
+        if !localSessions.isEmpty {
+            self.sessions = localSessions
+        } else {
+            print("No sessions found")
         }
     }
     
     private func saveData() async throws {
-//        feedRepo.saveFeeds(feeds)
-//        organizerRepo.saveOrganizers(organizers)
-//        sessionRepo.saveSessions(sessions)
-        speakerRepo.saveSpeakers(speakers)
+        sessionRepo.saveSessions(sessions)
     }
 
 }
