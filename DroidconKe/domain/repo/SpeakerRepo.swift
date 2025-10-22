@@ -29,13 +29,13 @@ class SpeakerRepo: SpeakerRepoProtocol {
             endpoint: .speakers(eventSlug: AppSecrets.droidcon_slug, perPage: 100)
         )
         return response.data.map { dto in
-            SpeakerMapper.dtoToEntity(dto, isDroidcon: true)
+            SpeakerMapper.dtoToEntity(dto, session: "", isDroidcon: true)
         }
     }
 
     func fetchLocalSpeakers() -> [SpeakerEntity] {
         let speakers = speakerDm.fetchSpeakers()
-        return speakers.sorted { $0.id < $1.id }
+        return speakers.sorted { $0.name < $1.name }
     }
     
     func saveSpeakers(_ speakers: [SpeakerEntity]) {

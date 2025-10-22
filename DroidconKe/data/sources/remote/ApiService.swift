@@ -33,13 +33,10 @@ class ApiService: ApiServiceProtocol {
         
         let (data, response) = try await session.data(for: request)
         
-        print("Api Fetched: \(String(describing: endpoint.url))")
-        print("Api Headers: \(String(describing: endpoint.headers))")
         guard let httpResponse = response as? HTTPURLResponse else {
             throw ApiError.invalidResponse
         }
         
-        print("Api Response: [\(httpResponse.statusCode)] \(data)")
         switch httpResponse.statusCode {
             case 200...299:
                 break

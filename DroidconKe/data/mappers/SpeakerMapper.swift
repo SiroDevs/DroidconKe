@@ -32,7 +32,7 @@ struct SpeakerMapper {
         cd.isDroidcon = entity.isDroidcon
     }
     
-    static func dtoToEntity(_ dto: SpeakerDTO, isDroidcon: Bool = true) -> SpeakerEntity {
+    static func dtoToEntity(_ dto: SpeakerDTO, session: String, isDroidcon: Bool = true) -> SpeakerEntity {
         SpeakerEntity(
             name: dto.name,
             tagline: dto.tagline,

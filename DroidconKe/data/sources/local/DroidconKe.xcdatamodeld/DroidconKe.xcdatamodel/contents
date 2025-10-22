@@ -25,36 +25,46 @@
         <attribute name="twitterHandle" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="CDRoom" representedClassName="CDRoom" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="session" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDSession" inverseName="rooms" inverseEntity="CDSession"/>
+    </entity>
     <entity name="CDSession" representedClassName="CDSession" syncable="YES" codeGenerationType="class">
+        <attribute name="backgroundColor" optional="YES" attributeType="String"/>
+        <attribute name="borderColor" optional="YES" attributeType="String"/>
+        <attribute name="date" optional="YES" attributeType="String"/>
+        <attribute name="descriptionTxt" optional="YES" attributeType="String"/>
         <attribute name="endDateTime" optional="YES" attributeType="String"/>
         <attribute name="endTime" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="isBookmarked" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isDroidcon" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isKeynote" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isServiceSession" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="remoteId" optional="YES" attributeType="String"/>
-        <attribute name="rooms" optional="YES" attributeType="String"/>
-        <attribute name="sessionDescription" optional="YES" attributeType="String"/>
+        <attribute name="sessionCategory" optional="YES" attributeType="String"/>
         <attribute name="sessionFormat" optional="YES" attributeType="String"/>
         <attribute name="sessionImage" optional="YES" attributeType="String"/>
-        <attribute name="sessionImageUrl" optional="YES" attributeType="String"/>
         <attribute name="sessionLevel" optional="YES" attributeType="String"/>
         <attribute name="slug" optional="YES" attributeType="String"/>
-        <attribute name="speakers" optional="YES" attributeType="String"/>
         <attribute name="startDateTime" optional="YES" attributeType="String"/>
-        <attribute name="startTimestamp" optional="YES" attributeType="String"/>
+        <attribute name="startTime" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="rooms" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDRoom" inverseName="session" inverseEntity="CDRoom"/>
+        <relationship name="speakers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDSpeaker" inverseName="session" inverseEntity="CDSpeaker"/>
     </entity>
     <entity name="CDSpeaker" representedClassName="CDSpeaker" syncable="YES" codeGenerationType="class">
         <attribute name="avatar" optional="YES" attributeType="String"/>
         <attribute name="biography" optional="YES" attributeType="String"/>
         <attribute name="blog" optional="YES" attributeType="String"/>
         <attribute name="companyWebsite" optional="YES" attributeType="String"/>
+        <attribute name="isBookmarked" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isDroidcon" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="linkedin" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="tagline" optional="YES" attributeType="String"/>
         <attribute name="twitter" optional="YES" attributeType="String"/>
+        <relationship name="session" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDSession" inverseName="speakers" inverseEntity="CDSession"/>
     </entity>
     <entity name="CDSponsor" representedClassName="CDSponsor" syncable="YES" codeGenerationType="class">
         <attribute name="createdAt" optional="YES" attributeType="String"/>

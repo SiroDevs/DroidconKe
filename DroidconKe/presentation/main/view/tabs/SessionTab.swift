@@ -1,5 +1,5 @@
 //
-//  HomeTab.swift
+//  FeedTab.swift
 //  DroidconKe
 //
 //  Created by @sirodevs on 20/10/2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HomeTab: View {
+struct SessionTab: View {
     @ObservedObject var viewModel: MainViewModel
 
     var body: some View {
@@ -17,7 +17,7 @@ struct HomeTab: View {
                     
                 }
             }
-            .navigationTitle("DroidconKe")
+            .navigationTitle("Feeds")
             .toolbarBackground(.regularMaterial, for: .navigationBar)
         }
     }

@@ -22,8 +22,8 @@ class SessionDataManager {
         context.perform {
             do {
                 for entity in sessions {
-                    let cd = self.findOrCreateCd(by: entity.remoteId!)
-                    SessionMapper.entityToCd(entity, cd)
+                    let cd = self.findOrCreateCd(by: entity.id)
+                    SessionMapper.entityToCd(entity, cd, context: self.context)
                 }
                 try self.context.save()
                 print("✅ Sessions saved successfully")
@@ -36,8 +36,8 @@ class SessionDataManager {
     func saveSession(_ entity: SessionEntity) {
         context.perform {
             do {
-                let cd = self.findOrCreateCd(by: entity.remoteId!)
-                SessionMapper.entityToCd(entity, cd)
+                let cd = self.findOrCreateCd(by: entity.id)
+                SessionMapper.entityToCd(entity, cd, context: self.context)
                 try self.context.save()
             } catch {
                 print("❌ Failed to save entity: \(error)")
@@ -55,23 +55,23 @@ class SessionDataManager {
         }
     }
     
-    func fetchSession(withId remoteId: String) -> SessionEntity? {
-        fetchCd(by: remoteId).map(SessionMapper.cdToEntity(_:))
+    func fetchSession(withId id: Int) -> SessionEntity? {
+        fetchCd(by: id).map(SessionMapper.cdToEntity(_:))
     }
 
-    private func fetchCd(by remoteId: String) -> CDSession? {
+    private func fetchCd(by id: Int) -> CDSession? {
         let request: NSFetchRequest<CDSession> = CDSession.fetchRequest()
-        request.predicate = NSPredicate(format: "remoteId == %d", remoteId)
+        request.predicate = NSPredicate(format: "id == %d", id)
         request.fetchLimit = 1
         return try? context.fetch(request).first
     }
 
-    private func findOrCreateCd(by remoteId: String) -> CDSession {
-        if let existing = fetchCd(by: remoteId) {
+    private func findOrCreateCd(by id: Int) -> CDSession {
+        if let existing = fetchCd(by: id) {
             return existing
         } else {
             let new = CDSession(context: context)
-            new.remoteId = remoteId
+            new.id = Int32(id)
             return new
         }
     }

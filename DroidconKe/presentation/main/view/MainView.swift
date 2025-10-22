@@ -23,19 +23,36 @@ struct MainView: View {
         switch viewModel.uiState {
         case .loading:
             ProgressView()
+                .scaleEffect(1.5)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             
         case .loaded:
             TabView {
                 HomeTab(viewModel: viewModel)
                     .tabItem {
-                        Label("Home", systemImage: "magnifyingglass")
+                        Image(systemName: "house.fill")
+                        Text("Home")
                     }
                 
                 FeedTab(viewModel: viewModel)
                     .tabItem {
-                        Label("sessions", systemImage: "heart.fill")
+                        Image(systemName: "heart.fill")
+                        Text("Feed")
+                    }
+                
+                SessionTab(viewModel: viewModel)
+                    .tabItem {
+                        Image(systemName: "calendar")
+                        Text("Sessions")
+                    }
+                
+                AboutTab(viewModel: viewModel)
+                    .tabItem {
+                        Image(systemName: "info.circle.fill")
+                        Text("About")
                     }
             }
+            .accentColor(.blue) // You can change this to match your brand
             .environment(\.horizontalSizeClass, .compact)
             
         case .error(let msg):
@@ -45,6 +62,9 @@ struct MainView: View {
             
         default:
             ProgressView()
+                .scaleEffect(1.5)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 }
+
