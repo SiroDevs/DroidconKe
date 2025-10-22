@@ -7,22 +7,20 @@
 
 import SwiftUI
 
-struct HomeTab: View {
-    @ObservedObject var viewModel: MainViewModel
-    
+struct TestTab: View {
     var body: some View {
         NavigationStack {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 24) {
-                    DroidconHeader(showFeedback: false)
+                    DroidconHeader(showFeedback: true)
                     heroSection
                     SessionSection(
                         title: "Sessions",
-                        sessions: viewModel.sessions
+                        sessions: SessionEntity.sampleSessions
                     )
                     SpeakerSection(
                         title: "Speakers",
-                        speakers: viewModel.speakers
+                        speakers: SpeakerEntity.sampleSpeakers
                     )
                 }
                 .padding(.horizontal)
@@ -34,8 +32,11 @@ struct HomeTab: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Welcome to the largest Android Focused Developer community in Africa.")
                 .font(.system(size: 20, weight: .bold))
-                .foregroundColor(.onPrimaryContainer)
         }
     }
     
+}
+
+#Preview {
+    TestTab()
 }

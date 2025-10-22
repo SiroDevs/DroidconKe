@@ -15,3 +15,7 @@ struct SponsorDTO: Codable {
     let sponsorType: String?
     let createdAt: String
 }
+
+struct SponsorRespDTO: Codable {
+    let data: [SponsorDTO]
+}

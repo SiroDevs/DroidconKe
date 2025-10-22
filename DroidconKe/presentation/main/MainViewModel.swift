@@ -11,6 +11,7 @@ final class MainViewModel: ObservableObject {
     @Published var feeds: [FeedEntity] = []
     @Published var organizers: [OrganizerEntity] = []
     @Published var sessions: [SessionEntity] = []
+    @Published var speakers: [SpeakerEntity] = []
 
     @Published var uiState: UiState = .idle
 
@@ -72,6 +73,7 @@ final class MainViewModel: ObservableObject {
         let localSessions = sessionRepo.fetchLocalSessions()
         if !localSessions.isEmpty {
             self.sessions = localSessions
+            fetchSpeakers()
         } else {
             print("No sessions found")
         }
@@ -79,6 +81,12 @@ final class MainViewModel: ObservableObject {
     
     private func saveData() async throws {
         sessionRepo.saveSessions(sessions)
+        fetchSpeakers()
+    }
+    
+    private func fetchSpeakers() {
+        let localSpeakers = speakerRepo.fetchLocalSpeakers()
+        self.speakers = localSpeakers
     }
 
 }

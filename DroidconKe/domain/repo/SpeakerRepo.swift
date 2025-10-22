@@ -7,7 +7,7 @@
 
 protocol SpeakerRepoProtocol {
     func fetchRemoteSpeakers() async throws -> [SpeakerEntity]
-    func fetchLocalSpeakers() throws -> [SpeakerEntity]
+    func fetchLocalSpeakers() -> [SpeakerEntity]
     func saveSpeakers(_ speakers: [SpeakerEntity])
     func clearAllSpeakers()
 }

@@ -14,17 +14,7 @@ struct AboutTab: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    // Header
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Droidcon")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                        
-                        Text("Feedback")
-                            .font(.title2)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding(.horizontal)
+                    DroidconHeader(showFeedback: true)
                     
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Droidcon is a global conference focused on the engineering of Android applications. Droidcon provides a forum for developers to network with other developers, share techniques, announce apps and products, and to learn and teach.")

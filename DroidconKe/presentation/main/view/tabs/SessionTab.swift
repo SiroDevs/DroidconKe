@@ -1,5 +1,5 @@
 //
-//  FeedTab.swift
+//  SessionTab.swift
 //  DroidconKe
 //
 //  Created by @sirodevs on 20/10/2025.
@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SessionTab: View {
     @ObservedObject var viewModel: MainViewModel
-    @State private var selectedDate = "16th Day 1"
+    @State private var selectedDate = "Day 1"
     @State private var searchText = ""
     
     private var availableDates: [String] {
@@ -33,6 +33,7 @@ struct SessionTab: View {
         NavigationStack {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 16) {
+                    DroidconHeader(showFeedback: true)
                     // Date Picker Section
                     if !availableDates.isEmpty {
                         datePickerSection

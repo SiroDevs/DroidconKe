@@ -14,7 +14,7 @@ struct FeedTab: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
-                    
+                    DroidconHeader(showFeedback: true)
                 }
             }
             .navigationTitle("Feeds")

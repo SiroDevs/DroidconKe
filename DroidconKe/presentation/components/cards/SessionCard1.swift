@@ -46,7 +46,7 @@ struct TimeSlotSection: View {
             
             LazyVStack(spacing: 16) {
                 ForEach(sessions) { session in
-                    SessionCard(session: session)
+                    SessionCard1(session: session)
                 }
             }
         }
@@ -65,7 +65,7 @@ struct TimeSlotSection: View {
     }
 }
 
-struct SessionCard: View {
+struct SessionCard1: View {
     let session: SessionEntity
     
     var body: some View {

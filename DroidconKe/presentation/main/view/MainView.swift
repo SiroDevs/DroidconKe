@@ -51,6 +51,12 @@ struct MainView: View {
                         Image(systemName: "info.circle.fill")
                         Text("About")
                     }
+                
+                SettingsTab(viewModel: viewModel)
+                    .tabItem {
+                        Image(systemName: "gear")
+                        Text("Settings")
+                    }
             }
             .accentColor(.blue)
             .environment(\.horizontalSizeClass, .compact)
