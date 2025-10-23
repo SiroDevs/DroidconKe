@@ -22,10 +22,7 @@ struct MainView: View {
     private var stateContent: some View {
         switch viewModel.uiState {
             case .loading:
-                LottieView(name: "Success").frame(width: 300, height: 300)
-                ProgressView()
-                    .scaleEffect(1.5)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                LoadingState(fileName: "android")
                 
             case .error(let msg):
                 ErrorState(message: msg) {
@@ -70,5 +67,13 @@ struct MainView: View {
             default:
                 EmptyState()
         }
+    }
+}
+
+struct ViewOffsetKey: PreferenceKey {
+    typealias Value = CGFloat
+    static var defaultValue = CGFloat.zero
+    static func reduce(value: inout Value, nextValue: () -> Value) {
+        value += nextValue()
     }
 }

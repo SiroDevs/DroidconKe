@@ -11,6 +11,7 @@ struct SessionTab: View {
     @ObservedObject var viewModel: MainViewModel
     @State private var selectedDate = "Day 1"
     @State private var searchText = ""
+    @State private var barHidden = true
     
     private var availableDates: [String] {
         let dates = Set(viewModel.sessions.map { $0.date })
@@ -31,30 +32,21 @@ struct SessionTab: View {
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                LazyVStack(alignment: .leading, spacing: 16) {
+            ScrollView(showsIndicators: false) {
+                LazyVStack(alignment: .center, spacing: 10) {
                     DroidconHeader(showFeedback: true)
-                    // Date Picker Section
                     if !availableDates.isEmpty {
                         datePickerSection
                     }
                     
-                    // Search and Filter Section
                     searchFilterSection
                     
-                    // Sessions Timeline
                     if filteredSessions.isEmpty {
                         emptyStateView
                     } else {
                         sessionsTimelineView
                     }
                 }
-                .padding(.horizontal)
-            }
-            .navigationTitle("Sessions")
-            .toolbarBackground(.regularMaterial, for: .navigationBar)
-            .refreshable {
-                await viewModel.syncData()
             }
         }
     }

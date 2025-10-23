@@ -9,16 +9,15 @@ import SwiftUI
 
 struct FeedTab: View {
     @ObservedObject var viewModel: MainViewModel
-
+    @State private var barHidden = true
+    
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 12) {
+            ScrollView(showsIndicators: false) {
+                LazyVStack(alignment: .center, spacing: 10) {
                     DroidconHeader(showFeedback: true)
                 }
             }
-            .navigationTitle("Feeds")
-            .toolbarBackground(.regularMaterial, for: .navigationBar)
         }
     }
 }

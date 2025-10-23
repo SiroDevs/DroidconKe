@@ -9,16 +9,19 @@ import SwiftUI
 
 struct HomeTab: View {
     @ObservedObject var viewModel: MainViewModel
+    @State private var barHidden = true
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                LazyVStack(alignment: .leading, spacing: 24) {
+            ScrollView(showsIndicators: false) {
+                LazyVStack(alignment: .center, spacing: 10) {
                     DroidconHeader(showFeedback: false)
                     
-                    Text("Welcome to the largest Android Focused Developer community in Africa.")
+                    Text(L10n.welcomeToDroidconKe)
                         .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(.onPrimaryContainer)
+                    
+                    Text(L10n.welcomeToDroidconKe)
+                        .font(.system(size: 20, weight: .bold))
                     
                     SessionSection(sessions: viewModel.sessions)
                     
@@ -28,8 +31,9 @@ struct HomeTab: View {
                     
                     OrganizersSection(organizers: viewModel.organizers)
                 }
-                .padding(.horizontal)
             }
         }
+        .animation(.default, value: barHidden)
+        .edgesIgnoringSafeArea(.all)
     }
 }

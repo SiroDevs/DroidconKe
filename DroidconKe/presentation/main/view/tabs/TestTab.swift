@@ -8,31 +8,32 @@
 import SwiftUI
 
 struct TestTab: View {
+    @State private var barHidden = true
+    
     var body: some View {
         NavigationStack {
-            ScrollView {
-                LazyVStack(alignment: .leading, spacing: 24) {
-                    DroidconHeader(showFeedback: true)
-                    heroSection
+            ScrollView(showsIndicators: false) {
+                VStack {
+                    DroidconHeader(showFeedback: false)
+                    
+                    Text(L10n.welcomeToDroidconKe)
+                        .font(.system(size: 20, weight: .bold))
+                    
                     SessionSection(
                         sessions: SessionEntity.sampleSessions
                     )
+                    
                     SpeakerSection(
                         speakers: SpeakerEntity.sampleSpeakers
                     )
+                    
+                    SponsorsSection(sponsors: SponsorEntity.sampleSponsors)
+                    
+                    OrganizersSection(organizers: OrganizerEntity.sampleOrganizers)
                 }
-                .padding(.horizontal)
             }
         }
     }
-    
-    private var heroSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Welcome to the largest Android Focused Developer community in Africa.")
-                .font(.system(size: 20, weight: .bold))
-        }
-    }
-    
 }
 
 #Preview {

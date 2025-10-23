@@ -9,77 +9,127 @@ import SwiftUI
 
 struct SessionCard: View {
     let session: SessionEntity
+    
+    private var hasSessionImage: Bool {
+        guard let sessionImage = session.sessionImage else { return false }
+        return !sessionImage.isEmpty
+    }
+    
+    private var sessionImageURL: URL? {
+        guard let sessionImage = session.sessionImage else { return nil }
+        return URL(string: sessionImage)
+    }
+    
+    private var backgroundColor: Color {
+        Color(hex: session.backgroundColor ?? "#0041FF")
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ZStack(alignment: .bottomLeading) {
-                Color(hex: session.backgroundColor ?? "#0041FF")
-                    .cornerRadius(12, corners: [.topLeft, .topRight])
-
-                VStack(alignment: .leading, spacing: 10) {
-                    if session.hasSpeakers {
-                        HStack(spacing: 12) {
-                            ForEach(session.speakers.prefix(2)) { speaker in
-                                VStack(spacing: 4) {
-                                    if !speaker.avatar.isEmpty,
-                                       let url = URL(string: speaker.avatar) {
-                                        AsyncImage(url: url) { image in
-                                            image.resizable()
-                                        } placeholder: {
-                                            Circle().fill(Color.white.opacity(0.3))
-                                        }
-                                        .scaledToFill()
-                                        .frame(width: 36, height: 36)
-                                        .clipShape(Circle())
-                                    } else {
-                                        Circle()
-                                            .fill(Color.white.opacity(0.3))
-                                            .frame(width: 36, height: 36)
-                                    }
-
-                                    Text(speaker.name)
-                                        .font(.caption2)
-                                        .foregroundColor(.white)
-                                        .lineLimit(1)
-                                }
-                            }
-                        }
-                    }
-
-                    // Session title
-                    Text(session.title)
-                        .font(.subheadline.bold())
-                        .foregroundColor(.white)
-                        .lineLimit(2)
-                }
-                .padding()
-            }
-            .frame(height: 140)
-
-            // MARK: - Bottom Section
-            VStack(alignment: .leading, spacing: 6) {
-                HStack(spacing: 6) {
-                    Label(session.startTime, systemImage: "clock")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-
-                    if !session.roomNames.isEmpty {
-                        Text("|")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                        Text(session.roomNames)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                }
-            }
-            .padding(.horizontal, 8)
-            .padding(.vertical, 10)
-            .background(Color(.systemGray6))
-            .cornerRadius(12, corners: [.bottomLeft, .bottomRight])
+            sessionContentView
+                .frame(height: 140)
+                .cornerRadius(12, corners: [.topLeft, .topRight])
+            
+            sessionInfoView
+                .background(Color(.systemGray6))
+                .cornerRadius(12, corners: [.bottomLeft, .bottomRight])
         }
         .frame(width: 260)
-        .shadow(color: Color.black.opacity(0.05), radius: 3, x: 0, y: 1)
+        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
+    }
+    
+    private var sessionContentView: some View {
+        ZStack(alignment: .bottomLeading) {
+            if hasSessionImage, let url = sessionImageURL {
+                AsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } placeholder: {
+                    backgroundColor
+                }
+            } else {
+                backgroundColor
+                sessionTextContent
+            }
+        }
+    }
+    
+    private var sessionTextContent: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(session.title)
+                .font(.headline)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .lineLimit(3)
+                .multilineTextAlignment(.leading)
+            
+            if !session.sessionFormat.isEmpty {
+                Text(session.sessionFormat)
+                    .font(.subheadline)
+                    .foregroundColor(.white.opacity(0.9))
+                    .lineLimit(2)
+            }
+            
+            if session.hasSpeakers {
+                speakersView
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    
+    private var speakersView: some View {
+        HStack(spacing: 8) {
+            ForEach(session.speakers.prefix(2)) { speaker in
+                speakerView(speaker)
+            }
+            
+            if session.speakers.count > 2 {
+                Text("+\(session.speakers.count - 2)")
+                    .font(.caption)
+                    .foregroundColor(.white.opacity(0.8))
+            }
+        }
+    }
+    
+    private func speakerView(_ speaker: SpeakerEntity) -> some View {
+        HStack(spacing: 4) {
+            if !speaker.avatar.isEmpty, let url = URL(string: speaker.avatar) {
+                AsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } placeholder: {
+                    Circle()
+                        .fill(Color.white.opacity(0.3))
+                }
+                .frame(width: 20, height: 20)
+                .clipShape(Circle())
+            }
+            
+            Text(speaker.name)
+                .font(.caption)
+                .foregroundColor(.white)
+                .lineLimit(1)
+        }
+    }
+    
+    private var sessionInfoView: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(session.title)
+                .font(.headline)
+                .fontWeight(.bold)
+                .lineLimit(2)
+                .multilineTextAlignment(.leading)
+            
+            Text("@ \(session.startTime) | \(session.roomNames)")
+                    .font(.caption)
+                    .fontWeight(.medium)
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -117,4 +167,10 @@ struct RoundedCorner: Shape {
         )
         return Path(path.cgPath)
     }
+}
+
+#Preview {
+    SessionCard(
+        session: SessionEntity.sampleSessions[0]
+    )
 }

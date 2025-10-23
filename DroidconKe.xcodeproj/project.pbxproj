@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		174EE7E72EA6A09F00B33BC3 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 174EE7E62EA6A09F00B33BC3 /* Swinject */; };
 		178353292EAA08A700BC34C3 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 178353282EAA08A700BC34C3 /* Lottie */; };
+		178353452EAA773700BC34C3 /* SVGKit in Frameworks */ = {isa = PBXBuildFile; productRef = 178353442EAA773700BC34C3 /* SVGKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				178353452EAA773700BC34C3 /* SVGKit in Frameworks */,
 				174EE7E72EA6A09F00B33BC3 /* Swinject in Frameworks */,
 				178353292EAA08A700BC34C3 /* Lottie in Frameworks */,
 			);
@@ -129,6 +131,7 @@
 			packageProductDependencies = (
 				174EE7E62EA6A09F00B33BC3 /* Swinject */,
 				178353282EAA08A700BC34C3 /* Lottie */,
+				178353442EAA773700BC34C3 /* SVGKit */,
 			);
 			productName = DroidconKe;
 			productReference = 174EE4802EA54AE100B33BC3 /* DroidconKe.app */;
@@ -215,6 +218,7 @@
 			packageReferences = (
 				174EE4AF2EA55F1900B33BC3 /* XCRemoteSwiftPackageReference "Swinject" */,
 				178353272EAA08A700BC34C3 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				178353432EAA773700BC34C3 /* XCRemoteSwiftPackageReference "SVGKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 174EE4812EA54AE100B33BC3 /* Products */;
@@ -609,6 +613,14 @@
 				minimumVersion = 4.5.2;
 			};
 		};
+		178353432EAA773700BC34C3 /* XCRemoteSwiftPackageReference "SVGKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SVGKit/SVGKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -621,6 +633,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 178353272EAA08A700BC34C3 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		178353442EAA773700BC34C3 /* SVGKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 178353432EAA773700BC34C3 /* XCRemoteSwiftPackageReference "SVGKit" */;
+			productName = SVGKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -9,7 +9,11 @@ import SwiftUI
 
 struct SessionSection: View {
     let sessions: [SessionEntity]
-
+    
+    private var randomSessions: [SessionEntity] {
+        Array(sessions.shuffled().prefix(4))
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
@@ -44,7 +48,7 @@ struct SessionSection: View {
             // MARK: - Sessions List
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
-                    ForEach(sessions) { session in
+                    ForEach(randomSessions) { session in
                         SessionCard(session: session)
                     }
                 }

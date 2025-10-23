@@ -11,20 +11,22 @@ import SwiftUI
 struct OrganizersSection: View {
     let organizers: [OrganizerEntity]
     
+    private let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+    
     var body: some View {
-        VStack(alignment: .center, spacing: 24) {
-            Text("Organized by;")
+        VStack(alignment: .center, spacing: 20) {
+            Text("Organized by")
                 .font(.title2)
                 .fontWeight(.semibold)
-                .padding(.horizontal)
                 .foregroundColor(.onPrimary)
             
-            LazyVStack(alignment: .leading, spacing: 32) {
+            LazyVGrid(columns: columns, spacing: 20) {
                 ForEach(organizers, id: \.id) { organizer in
-                    OrganizerLogo(
-                        organizer: organizer,
-                        size: CGSize(width: 80, height: 60)
-                    )
+                    OrganizerLogo(organizer: organizer)
                 }
             }
         }
@@ -39,7 +41,6 @@ struct OrganizersSection: View {
 
 struct OrganizerLogo: View {
     let organizer: OrganizerEntity
-    let size: CGSize
     
     var body: some View {
         Group {
@@ -48,12 +49,12 @@ struct OrganizerLogo: View {
                     switch phase {
                     case .empty:
                         ProgressView()
-                            .frame(width: size.width, height: size.height)
+                            .frame(height: 60)
                     case .success(let image):
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: size.width, height: size.height)
+                            .frame(height: 60)
                     case .failure:
                         placeholderLogo
                     @unknown default:
@@ -69,9 +70,9 @@ struct OrganizerLogo: View {
     private var placeholderLogo: some View {
         Rectangle()
             .fill(Color.gray.opacity(0.3))
-            .frame(width: size.width, height: size.height)
+            .frame(height: 60)
             .overlay(
-                Text(organizer.name?.first?.uppercased() ?? "o")
+                Text(organizer.name?.first?.uppercased() ?? "O")
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundColor(.gray)

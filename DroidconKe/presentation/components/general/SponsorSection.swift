@@ -17,14 +17,14 @@ struct SponsorsSection: View {
     private let sponsorTypeOrder = ["platinum", "gold", "silver", "bronze", "other"]
     
     var body: some View {
-        VStack(alignment: .center, spacing: 24) {
+        VStack(alignment: .center, spacing: 10) {
             Text("Sponsors")
                 .font(.title2)
                 .fontWeight(.semibold)
                 .padding(.horizontal)
                 .foregroundColor(.onPrimary)
             
-            LazyVStack(alignment: .leading, spacing: 32) {
+            LazyVStack(alignment: .leading, spacing: 10) {
                 ForEach(sponsorTypeOrder, id: \.self) { sponsorType in
                     if let sponsorsOfType = groupedSponsors[sponsorType], !sponsorsOfType.isEmpty {
                         SponsorTypeSection(
@@ -57,7 +57,7 @@ struct SponsorTypeSection: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 10) {
             if isPlatinum {
                 platinumSponsorsView
             } else {
@@ -67,11 +67,11 @@ struct SponsorTypeSection: View {
     }
     
     private var platinumSponsorsView: some View {
-        LazyVStack(spacing: 20) {
+        LazyVStack(spacing: 10) {
             ForEach(sponsors, id: \.id) { sponsor in
-                SponsorLogo(
+                SponsorCard(
                     sponsor: sponsor,
-                    size: CGSize(width: 160, height: 120)
+                    size: CGSize(width: 160, height: 100)
                 )
                 .frame(maxWidth: .infinity)
             }
@@ -83,7 +83,7 @@ struct SponsorTypeSection: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 24) {
                 ForEach(sponsors, id: \.id) { sponsor in
-                    SponsorLogo(
+                    SponsorCard(
                         sponsor: sponsor,
                         size: CGSize(width: 80, height: 60)
                     )
@@ -114,7 +114,7 @@ struct SponsorTypeGridSection: View {
             if isPlatinum {
                 LazyVGrid(columns: [GridItem(.flexible())], spacing: 20) {
                     ForEach(sponsors, id: \.id) { sponsor in
-                        SponsorLogo(
+                        SponsorCard(
                             sponsor: sponsor,
                             size: CGSize(width: 160, height: 120)
                         )
@@ -124,7 +124,7 @@ struct SponsorTypeGridSection: View {
             } else {
                 LazyVGrid(columns: columns, spacing: 20) {
                     ForEach(sponsors, id: \.self) { sponsor in
-                        SponsorLogo(
+                        SponsorCard(
                             sponsor: sponsor,
                             size: CGSize(width: 80, height: 60)
                         )
@@ -133,49 +133,6 @@ struct SponsorTypeGridSection: View {
                 .padding(.horizontal)
             }
         }
-    }
-}
-
-struct SponsorLogo: View {
-    let sponsor: SponsorEntity
-    let size: CGSize
-    
-    var body: some View {
-        Group {
-            if let logoUrl = sponsor.logo, let url = URL(string: logoUrl) {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .empty:
-                        ProgressView()
-                            .frame(width: size.width, height: size.height)
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: size.width, height: size.height)
-                    case .failure:
-                        placeholderLogo
-                    @unknown default:
-                        placeholderLogo
-                    }
-                }
-            } else {
-                placeholderLogo
-            }
-        }
-    }
-    
-    private var placeholderLogo: some View {
-        Rectangle()
-            .fill(Color.gray.opacity(0.3))
-            .frame(width: size.width, height: size.height)
-            .overlay(
-                Text(sponsor.name?.first?.uppercased() ?? "S")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundColor(.gray)
-            )
-            .cornerRadius(12)
     }
 }
 

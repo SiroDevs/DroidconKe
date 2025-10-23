@@ -9,7 +9,11 @@ import SwiftUI
 
 struct SpeakerSection: View {
     let speakers: [SpeakerEntity]
-
+    
+    private var randomSpeakers: [SpeakerEntity] {
+        Array(speakers.shuffled().prefix(7))
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
@@ -43,7 +47,7 @@ struct SpeakerSection: View {
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
-                    ForEach(speakers) { speaker in
+                    ForEach(randomSpeakers) { speaker in
                         SpeakerCard(speaker: speaker)
                     }
                 }

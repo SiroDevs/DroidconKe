@@ -13,7 +13,7 @@ struct SpeakerCard: View {
     var size: CGFloat = 70
     
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(alignment: .leading, spacing: 8) {
             AsyncImage(url: URL(string: speaker.avatar)) { image in
                 image
                     .resizable()
@@ -33,7 +33,14 @@ struct SpeakerCard: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(.primary)
                 .lineLimit(2)
-                .frame(width: size + 10)
+                .frame(width: size + 10, height: size/2)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
+}
+
+#Preview {
+    SpeakerSection(
+        speakers: SpeakerEntity.sampleSpeakers
+    )
 }
