@@ -9,13 +9,17 @@ import SwiftUI
 
 struct AboutTab: View {
     @ObservedObject var viewModel: MainViewModel
-    @State private var barHidden = true
     
     var body: some View {
         NavigationView {
             ScrollView(showsIndicators: false) {
                 LazyVStack(alignment: .center, spacing: 10) {
                     DroidconHeader(showFeedback: true)
+                    Text("About")
+                                            .font(.title2)
+                                            .fontWeight(.semibold)
+                                            .padding(.horizontal)
+                                        
                     
                     Text(L10n.aboutDroidconKe1)
                         .font(.body)
@@ -29,20 +33,21 @@ struct AboutTab: View {
                         .font(.body)
                         .foregroundColor(.primary)
                     
-                    Text("Organizing Team")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .padding(.horizontal)
-                    
-                    LazyVGrid(columns: [
-                        GridItem(.flexible()),
-                        GridItem(.flexible())
-                    ], spacing: 16) {
-                        ForEach(0..<9) { index in
-                            TeamMemberCard(index: index)
-                        }
-                    }
+//                    Text("Organizing Team")
+//                        .font(.title2)
+//                        .fontWeight(.semibold)
+//                        .padding(.horizontal)
+//                    
+//                    LazyVGrid(columns: [
+//                        GridItem(.flexible()),
+//                        GridItem(.flexible())
+//                    ], spacing: 16) {
+//                        ForEach(0..<9) { index in
+//                            TeamMemberCard(index: index)
+//                        }
+//                    }
                 }
+                .padding(.horizontal)
             }
         }
     }

@@ -39,7 +39,7 @@ struct MainView: View {
                     
                     FeedTab(viewModel: viewModel)
                         .tabItem {
-                            Image(systemName: "heart.fill")
+                            Image(systemName: "bell.fill")
                             Text("Feed")
                         }
                     

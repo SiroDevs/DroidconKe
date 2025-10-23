@@ -104,4 +104,5 @@ class AppUtils {
     func getFontSize(characters: Int, height: Double, width: Double) -> Double {
         return sqrt((height * width) / Double(characters))
     }
+    
 }

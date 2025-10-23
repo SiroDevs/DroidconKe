@@ -11,7 +11,12 @@ struct SessionSection: View {
     let sessions: [SessionEntity]
     
     private var randomSessions: [SessionEntity] {
-        Array(sessions.shuffled().prefix(4))
+        let filteredSessions = sessions.filter { $0.sessionFormat.isEmpty == false }
+        
+        
+        let sessionsToUse = filteredSessions.isEmpty ? sessions : filteredSessions
+        
+        return Array(sessionsToUse.shuffled().prefix(4))
     }
     
     var body: some View {
@@ -45,11 +50,14 @@ struct SessionSection: View {
             }
             .padding(.horizontal)
 
-            // MARK: - Sessions List
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
                     ForEach(randomSessions) { session in
-                        SessionCard(session: session)
+                        NavigationLink {
+                            SessionView(session: session)
+                        } label: {
+                            SessionCard(session: session)
+                        }
                     }
                 }
                 .padding(.horizontal)

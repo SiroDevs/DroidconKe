@@ -48,7 +48,11 @@ struct SpeakerSection: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
                     ForEach(randomSpeakers) { speaker in
-                        SpeakerCard(speaker: speaker)
+                        NavigationLink {
+                            SpeakerView(speaker: speaker)
+                        } label: {
+                            SpeakerCard(speaker: speaker)
+                        }
                     }
                 }
                 .padding(.horizontal)

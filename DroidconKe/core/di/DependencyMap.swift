@@ -98,6 +98,19 @@ struct DependencyMap {
             )
         }.inObjectScope(.container)
 
+        container.register(SessionViewModel.self) { resolver in
+            SessionViewModel(
+                sessionRepo: resolver.resolve(SessionRepoProtocol.self)!,
+            )
+        }.inObjectScope(.container)
+
+        container.register(SpeakerViewModel.self) { resolver in
+            SpeakerViewModel(
+                sessionRepo: resolver.resolve(SessionRepoProtocol.self)!,
+                speakerRepo: resolver.resolve(SpeakerRepoProtocol.self)!,
+            )
+        }.inObjectScope(.container)
+
     }
 }
 

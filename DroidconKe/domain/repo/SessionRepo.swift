@@ -10,6 +10,7 @@ import Foundation
 protocol SessionRepoProtocol {
     func fetchRemoteData() async throws -> [SessionEntity]
     func fetchLocalData() -> [SessionEntity]
+//    func fetchLocalDataBySpeaker() -> [SessionEntity]
     func saveData(_ sessions: [SessionEntity])
     func clearAllData()
 }

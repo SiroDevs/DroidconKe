@@ -29,20 +29,13 @@ struct TimeSlotSection: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Text(formatTime(timeSlot))
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                
-                Rectangle()
-                    .fill(Color.gray.opacity(0.3))
-                    .frame(height: 1)
-                    .padding(.leading, 8)
-            }
-            
             LazyVStack(spacing: 16) {
                 ForEach(sessions) { session in
-                    SessionCard(session: session)
+                    NavigationLink {
+                        SessionView(session: session)
+                    } label: {
+                        TimelineCard(session: session)
+                    }
                 }
             }
         }
@@ -59,4 +52,8 @@ struct TimeSlotSection: View {
         
         return timeString
     }
+}
+
+#Preview {
+    TestTab(sessions: SessionEntity.sampleSessions)
 }

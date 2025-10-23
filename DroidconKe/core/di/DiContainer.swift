@@ -38,6 +38,8 @@ final class DiContainer {
             { self.container.resolve(SpeakerRepoProtocol.self) },
             { self.container.resolve(SponsorRepoProtocol.self) },
             { self.container.resolve(MainViewModel.self) },
+            { self.container.resolve(SessionViewModel.self) },
+            { self.container.resolve(SpeakerViewModel.self) },
         ]
 
         for resolve in dependencies {

@@ -16,6 +16,7 @@ struct FeedTab: View {
             ScrollView(showsIndicators: false) {
                 LazyVStack(alignment: .center, spacing: 10) {
                     DroidconHeader(showFeedback: true)
+                    EmptyState()
                 }
             }
         }
