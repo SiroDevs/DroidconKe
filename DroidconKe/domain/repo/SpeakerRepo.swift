@@ -6,10 +6,10 @@
 //
 
 protocol SpeakerRepoProtocol {
-    func fetchRemoteSpeakers() async throws -> [SpeakerEntity]
-    func fetchLocalSpeakers() -> [SpeakerEntity]
-    func saveSpeakers(_ speakers: [SpeakerEntity])
-    func clearAllSpeakers()
+    func fetchRemoteData() async throws -> [SpeakerEntity]
+    func fetchLocalData() -> [SpeakerEntity]
+    func saveData(_ speakers: [SpeakerEntity])
+    func clearAllData()
 }
 
 class SpeakerRepo: SpeakerRepoProtocol {
@@ -24,7 +24,7 @@ class SpeakerRepo: SpeakerRepoProtocol {
         self.speakerDm = speakerDm
     }
     
-    func fetchRemoteSpeakers() async throws -> [SpeakerEntity] {
+    func fetchRemoteData() async throws -> [SpeakerEntity] {
         let response: SpeakersRespDTO = try await apiService.fetch(
             endpoint: .speakers(eventSlug: AppSecrets.droidcon_slug, perPage: 100)
         )
@@ -33,16 +33,20 @@ class SpeakerRepo: SpeakerRepoProtocol {
         }
     }
 
-    func fetchLocalSpeakers() -> [SpeakerEntity] {
+    func fetchLocalData() -> [SpeakerEntity] {
         let speakers = speakerDm.fetchSpeakers()
-        return speakers.sorted { $0.name < $1.name }
+        let uniqueSpeakers = Array(
+            Dictionary(grouping: speakers, by: { $0.name })
+                .compactMap { $0.value.first }
+        )
+        return uniqueSpeakers.sorted { $0.name < $1.name }
     }
     
-    func saveSpeakers(_ speakers: [SpeakerEntity]) {
+    func saveData(_ speakers: [SpeakerEntity]) {
         speakerDm.saveSpeakers(speakers)
     }
     
-    func clearAllSpeakers() {
+    func clearAllData() {
         speakerDm.deleteAllSpeakers()
     }
 }

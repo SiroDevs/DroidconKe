@@ -8,13 +8,12 @@
 import SwiftUI
 
 struct SpeakerSection: View {
-    let title: String
     let speakers: [SpeakerEntity]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text(title)
+                Text("Speakers")
                     .font(.title3.bold())
                     .foregroundColor(.onPrimary)
 
@@ -57,7 +56,6 @@ struct SpeakerSection: View {
 
 #Preview {
     SpeakerSection(
-        title: "Speakers",
         speakers: SpeakerEntity.sampleSpeakers
     )
 }

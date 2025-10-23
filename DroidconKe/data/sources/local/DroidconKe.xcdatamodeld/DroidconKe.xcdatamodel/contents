@@ -14,16 +14,17 @@
         <attribute name="url" optional="YES" attributeType="String"/>
     </entity>
     <entity name="CDOrganizer" representedClassName="CDOrganizer" syncable="YES" codeGenerationType="class">
-        <attribute name="bio" optional="YES" attributeType="String"/>
         <attribute name="createdAt" optional="YES" attributeType="String"/>
-        <attribute name="designation" optional="YES" attributeType="String"/>
+        <attribute name="descriptionTxt" optional="YES" attributeType="String"/>
+        <attribute name="email" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="link" optional="YES" attributeType="String"/>
+        <attribute name="logo" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <attribute name="photo" optional="YES" attributeType="String"/>
-        <attribute name="tagline" optional="YES" attributeType="String"/>
-        <attribute name="twitterHandle" optional="YES" attributeType="String"/>
-        <attribute name="type" optional="YES" attributeType="String"/>
+        <attribute name="slug" optional="YES" attributeType="String"/>
+        <attribute name="status" optional="YES" attributeType="String"/>
+        <attribute name="totalEventsCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="twitter" optional="YES" attributeType="String"/>
+        <attribute name="upcomingEventsCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <entity name="CDRoom" representedClassName="CDRoom" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>

@@ -94,6 +94,7 @@ struct DependencyMap {
                 organizerRepo: resolver.resolve(OrganizerRepoProtocol.self)!,
                 sessionRepo: resolver.resolve(SessionRepoProtocol.self)!,
                 speakerRepo: resolver.resolve(SpeakerRepoProtocol.self)!,
+                sponsorRepo: resolver.resolve(SponsorRepoProtocol.self)!,
             )
         }.inObjectScope(.container)
 

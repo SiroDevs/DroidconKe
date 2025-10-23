@@ -21,55 +21,54 @@ struct MainView: View {
     @ViewBuilder
     private var stateContent: some View {
         switch viewModel.uiState {
-        case .loading:
-            ProgressView()
-                .scaleEffect(1.5)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            
-        case .loaded:
-            TabView {
-                HomeTab(viewModel: viewModel)
-                    .tabItem {
-                        Image(systemName: "house.fill")
-                        Text("Home")
-                    }
+            case .loading:
+                LottieView(name: "Success").frame(width: 300, height: 300)
+                ProgressView()
+                    .scaleEffect(1.5)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 
-                FeedTab(viewModel: viewModel)
-                    .tabItem {
-                        Image(systemName: "heart.fill")
-                        Text("Feed")
-                    }
+            case .error(let msg):
+                ErrorState(message: msg) {
+                    Task { await viewModel.syncData() }
+                }
                 
-                SessionTab(viewModel: viewModel)
-                    .tabItem {
-                        Image(systemName: "calendar")
-                        Text("Sessions")
-                    }
+            case .loaded:
+                TabView {
+                    HomeTab(viewModel: viewModel)
+                        .tabItem {
+                            Image(systemName: "house.fill")
+                            Text("Home")
+                        }
+                    
+                    FeedTab(viewModel: viewModel)
+                        .tabItem {
+                            Image(systemName: "heart.fill")
+                            Text("Feed")
+                        }
+                    
+                    SessionTab(viewModel: viewModel)
+                        .tabItem {
+                            Image(systemName: "calendar")
+                            Text("Sessions")
+                        }
+                    
+                    AboutTab(viewModel: viewModel)
+                        .tabItem {
+                            Image(systemName: "info.circle.fill")
+                            Text("About")
+                        }
+                    
+                    SettingsTab(viewModel: viewModel)
+                        .tabItem {
+                            Image(systemName: "gear")
+                            Text("Settings")
+                        }
+                }
+                .accentColor(.blue)
+                .environment(\.horizontalSizeClass, .compact)
                 
-                AboutTab(viewModel: viewModel)
-                    .tabItem {
-                        Image(systemName: "info.circle.fill")
-                        Text("About")
-                    }
-                
-                SettingsTab(viewModel: viewModel)
-                    .tabItem {
-                        Image(systemName: "gear")
-                        Text("Settings")
-                    }
-            }
-            .accentColor(.blue)
-            .environment(\.horizontalSizeClass, .compact)
-            
-        case .error(let msg):
-            ErrorState(message: msg) {
-                Task { await viewModel.syncData() }
-            }
-            
-        default:
-            ProgressView()
-                .scaleEffect(1.5)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            default:
+                EmptyState()
         }
     }
 }

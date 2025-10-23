@@ -10,12 +10,13 @@ import Foundation
 struct OrganizerEntity: Identifiable, Codable {
     var id: Int = 0
     var name: String?
-    var tagline: String?
-    var link: String?
-    var type: String?
-    var photo: String?
-    var bio: String?
-    var twitterHandle: String?
-    var designation: String?
-    var createdAt: String
+    var email: String?
+    var description: String?
+    var twitter: String?
+    var logo: String?
+    var slug: String?
+    var status: String?
+    var createdAt: String?
+    var upcomingEventsCount: Int
+    var totalEventsCount: Int
 }

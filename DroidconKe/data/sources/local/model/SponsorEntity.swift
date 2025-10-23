@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SponsorEntity: Codable {
+struct SponsorEntity: Codable, Hashable {
     var id: Int = 0
     var name: String?
     var tagline: String?
@@ -15,4 +15,12 @@ struct SponsorEntity: Codable {
     var logo: String?
     var sponsorType: String?
     var createdAt: String
+    
+    static func == (lhs: SponsorEntity, rhs: SponsorEntity) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }

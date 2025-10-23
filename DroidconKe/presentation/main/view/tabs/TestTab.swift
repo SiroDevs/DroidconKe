@@ -15,11 +15,9 @@ struct TestTab: View {
                     DroidconHeader(showFeedback: true)
                     heroSection
                     SessionSection(
-                        title: "Sessions",
                         sessions: SessionEntity.sampleSessions
                     )
                     SpeakerSection(
-                        title: "Speakers",
                         speakers: SpeakerEntity.sampleSpeakers
                     )
                 }

@@ -8,8 +8,8 @@
 protocol FeedRepoProtocol {
     func fetchRemoteData() async throws -> [FeedEntity]
     func fetchLocalData() async throws -> [FeedEntity]
-    func saveFeeds(_ feeds: [FeedEntity])
-    func clearAllFeeds()
+    func saveData(_ feeds: [FeedEntity])
+    func clearAllData()
 }
 
 class FeedRepo: FeedRepoProtocol {
@@ -33,11 +33,11 @@ class FeedRepo: FeedRepoProtocol {
         return feeds.sorted { $0.id < $1.id }
     }
     
-    func saveFeeds(_ feeds: [FeedEntity]) {
+    func saveData(_ feeds: [FeedEntity]) {
         feedDm.saveFeeds(feeds)
     }
     
-    func clearAllFeeds() {
+    func clearAllData() {
         feedDm.deleteAllFeeds()
     }
 }

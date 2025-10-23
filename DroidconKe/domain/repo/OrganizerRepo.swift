@@ -8,8 +8,8 @@
 protocol OrganizerRepoProtocol {
     func fetchRemoteData() async throws -> [OrganizerEntity]
     func fetchLocalData() async throws -> [OrganizerEntity]
-    func saveOrganizers(_ organizers: [OrganizerEntity])
-    func clearAllOrganizers()
+    func saveData(_ organizers: [OrganizerEntity])
+    func clearAllData()
 }
 
 class OrganizerRepo: OrganizerRepoProtocol {
@@ -25,7 +25,12 @@ class OrganizerRepo: OrganizerRepoProtocol {
     }
     
     func fetchRemoteData() async throws -> [OrganizerEntity] {
-        return try await apiService.fetch(endpoint: .organizers(orgSlug: "", type: "", page: 1, perPage: 100))
+        let response: OrganizersRespDTO = try await apiService.fetch(
+            endpoint: .organizers(perPage: 100)
+        )
+        return response.data.map { dto in
+            OrganizerMapper.dtoToEntity(dto)
+        }
     }
     
     func fetchLocalData() -> [OrganizerEntity] {
@@ -33,11 +38,11 @@ class OrganizerRepo: OrganizerRepoProtocol {
         return organizers.sorted { $0.id < $1.id }
     }
     
-    func saveOrganizers(_ organizers: [OrganizerEntity]) {
+    func saveData(_ organizers: [OrganizerEntity]) {
         organizerDm.saveOrganizers(organizers)
     }
     
-    func clearAllOrganizers() {
+    func clearAllData() {
         organizerDm.deleteAllOrganizers()
     }
 }

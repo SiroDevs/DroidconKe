@@ -8,58 +8,61 @@
 struct OrganizerMapper {
     static func cdToEntity(_ cd: CDOrganizer) -> OrganizerEntity {
         OrganizerEntity(
-            id: Int(cd.id),
             name: cd.name ?? "",
-            tagline: cd.tagline ?? "",
-            link: cd.link ?? "",
-            type: cd.type ?? "",
-            photo: cd.photo ?? "",
-            bio: cd.bio ?? "",
-            twitterHandle: cd.twitterHandle ?? "",
-            designation: cd.designation ?? "",
-            createdAt: cd.createdAt ?? ""
+            email: cd.email ?? "",
+            description: cd.descriptionTxt ?? "",
+            twitter: cd.twitter ?? "",
+            logo: cd.logo ?? "",
+            slug: cd.slug ?? "",
+            status: cd.status ?? "",
+            createdAt: cd.createdAt ?? "",
+            upcomingEventsCount: Int(cd.upcomingEventsCount),
+            totalEventsCount: Int(cd.totalEventsCount)
         )
     }
     
     static func entityToCd(_ entity: OrganizerEntity, _ cd: CDOrganizer) {
         cd.id = Int32(entity.id)
         cd.name = entity.name ?? ""
-        cd.tagline = entity.tagline ?? ""
-        cd.link = entity.link ?? ""
-        cd.link = entity.link ?? ""
-        cd.photo = entity.photo ?? ""
-        cd.bio = entity.bio ?? ""
-        cd.twitterHandle = entity.twitterHandle ?? ""
-        cd.designation = entity.designation ?? ""
-        cd.createdAt = entity.createdAt
+        cd.email = entity.email ?? ""
+        cd.descriptionTxt = entity.description ?? ""
+        cd.twitter = entity.twitter ?? ""
+        cd.logo = entity.logo ?? ""
+        cd.slug = entity.slug ?? ""
+        cd.status = entity.status ?? ""
+        cd.createdAt = entity.createdAt ?? ""
+        cd.upcomingEventsCount = Int32(entity.upcomingEventsCount)
+        cd.totalEventsCount = Int32(entity.totalEventsCount)
     }
     
     static func dtoToEntity(_ dto: OrganizerDTO) -> OrganizerEntity {
         OrganizerEntity(
-//            id: Int(dto.id),
             name: dto.name ?? "",
-            tagline: dto.tagline ?? "",
-            link: dto.link ?? "",
-            type: dto.type ?? "",
-            photo: dto.photo ?? "",
-            bio: dto.bio ?? "",
-            twitterHandle: dto.twitterHandle ?? "",
-            designation: dto.designation ?? "",
-            createdAt: dto.createdAt
+            email: dto.email ?? "",
+            description: dto.description ?? "",
+            twitter: dto.twitter ?? "",
+            logo: dto.logo ?? "",
+            slug: dto.slug ?? "",
+            status: dto.status ?? "",
+            createdAt: dto.createdAt ?? "",
+            upcomingEventsCount: dto.upcomingEventsCount,
+            totalEventsCount: dto.totalEventsCount
         )
     }
     
     static func entityToDto(_ entity: OrganizerEntity) -> OrganizerDTO {
         OrganizerDTO(
+            id: entity.id,
             name: entity.name ?? "",
-            tagline: entity.tagline ?? "",
-            link: entity.link ?? "",
-            type: entity.type ?? "",
-            photo: entity.photo ?? "",
-            bio: entity.bio ?? "",
-            twitterHandle: entity.twitterHandle ?? "",
-            designation: entity.designation ?? "",
-            createdAt: entity.createdAt
+            email: entity.email ?? "",
+            description: entity.description ?? "",
+            twitter: entity.twitter ?? "",
+            logo: entity.logo ?? "",
+            slug: entity.slug ?? "",
+            status: entity.status ?? "",
+            createdAt: entity.createdAt ?? "",
+            upcomingEventsCount: entity.upcomingEventsCount,
+            totalEventsCount: entity.totalEventsCount
         )
     }
 }

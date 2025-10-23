@@ -8,10 +8,10 @@
 import Foundation
 
 protocol SessionRepoProtocol {
-    func fetchRemoteSessions() async throws -> [SessionEntity]
-    func fetchLocalSessions() -> [SessionEntity]
-    func saveSessions(_ sessions: [SessionEntity])
-    func clearAllSessions()
+    func fetchRemoteData() async throws -> [SessionEntity]
+    func fetchLocalData() -> [SessionEntity]
+    func saveData(_ sessions: [SessionEntity])
+    func clearAllData()
 }
 
 class SessionRepo: SessionRepoProtocol {
@@ -26,7 +26,7 @@ class SessionRepo: SessionRepoProtocol {
         self.sessionDm = sessionDm
     }
     
-    func fetchRemoteSessions() async throws -> [SessionEntity] {
+    func fetchRemoteData() async throws -> [SessionEntity] {
         let response: SessionsRespDTO = try await apiService.fetch(
             endpoint: .sessions(eventSlug: AppSecrets.droidcon_slug)
         )
@@ -43,7 +43,7 @@ class SessionRepo: SessionRepoProtocol {
         return allSessions
     }
 
-    func fetchLocalSessions() -> [SessionEntity] {
+    func fetchLocalData() -> [SessionEntity] {
         let sessions = sessionDm.fetchSessions()
         return sessions.sorted {
             if $0.date == $1.date {
@@ -53,11 +53,11 @@ class SessionRepo: SessionRepoProtocol {
         }
     }
     
-    func saveSessions(_ sessions: [SessionEntity]) {
+    func saveData(_ sessions: [SessionEntity]) {
         sessionDm.saveSessions(sessions)
     }
     
-    func clearAllSessions() {
+    func clearAllData() {
         sessionDm.deleteAllSessions()
     }
     

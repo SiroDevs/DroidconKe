@@ -8,13 +8,12 @@
 import SwiftUI
 
 struct SessionSection: View {
-    let title: String
     let sessions: [SessionEntity]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text(title)
+                Text("Sessions")
                     .font(.title3.bold())
                     .foregroundColor(.onPrimary)
 
@@ -58,7 +57,6 @@ struct SessionSection: View {
 
 #Preview {
     SessionSection(
-        title: "Sessions",
         sessions: SessionEntity.sampleSessions
     )
 }

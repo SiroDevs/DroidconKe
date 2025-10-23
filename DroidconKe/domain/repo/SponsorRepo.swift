@@ -8,8 +8,8 @@
 protocol SponsorRepoProtocol {
     func fetchRemoteData() async throws -> [SponsorEntity]
     func fetchLocalData() async throws -> [SponsorEntity]
-    func saveSponsors(_ sponsors: [SponsorEntity])
-    func clearAllSponsors()
+    func saveData(_ sponsors: [SponsorEntity])
+    func clearAllData()
 }
 
 class SponsorRepo: SponsorRepoProtocol {
@@ -25,7 +25,12 @@ class SponsorRepo: SponsorRepoProtocol {
     }
     
     func fetchRemoteData() async throws -> [SponsorEntity] {
-        return try await apiService.fetch(endpoint: .sponsors(orgSlug: "", perPage: 100))
+        let response: SponsorsRespDTO = try await apiService.fetch(
+            endpoint: .sponsors(eventSlug: AppSecrets.droidcon_slug)
+        )
+        return response.data.map { dto in
+            SponsorMapper.dtoToEntity(dto)
+        }
     }
     
     func fetchLocalData() -> [SponsorEntity] {
@@ -33,11 +38,11 @@ class SponsorRepo: SponsorRepoProtocol {
         return sponsors.sorted { $0.id < $1.id }
     }
     
-    func saveSponsors(_ sponsors: [SponsorEntity]) {
+    func saveData(_ sponsors: [SponsorEntity]) {
         sponsorDm.saveSponsors(sponsors)
     }
     
-    func clearAllSponsors() {
+    func clearAllData() {
         sponsorDm.deleteAllSponsors()
     }
 }

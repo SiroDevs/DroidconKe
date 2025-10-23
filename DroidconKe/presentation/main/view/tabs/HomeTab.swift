@@ -15,27 +15,21 @@ struct HomeTab: View {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 24) {
                     DroidconHeader(showFeedback: false)
-                    heroSection
-                    SessionSection(
-                        title: "Sessions",
-                        sessions: viewModel.sessions
-                    )
-                    SpeakerSection(
-                        title: "Speakers",
-                        speakers: viewModel.speakers
-                    )
+                    
+                    Text("Welcome to the largest Android Focused Developer community in Africa.")
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundColor(.onPrimaryContainer)
+                    
+                    SessionSection(sessions: viewModel.sessions)
+                    
+                    SpeakerSection(speakers: viewModel.speakers)
+                    
+                    SponsorsSection(sponsors: viewModel.sponsors)
+                    
+                    OrganizersSection(organizers: viewModel.organizers)
                 }
                 .padding(.horizontal)
             }
         }
     }
-    
-    private var heroSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Welcome to the largest Android Focused Developer community in Africa.")
-                .font(.system(size: 20, weight: .bold))
-                .foregroundColor(.onPrimaryContainer)
-        }
-    }
-    
 }

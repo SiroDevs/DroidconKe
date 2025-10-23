@@ -14,8 +14,14 @@ struct SponsorDTO: Codable {
     let logo: String?
     let sponsorType: String?
     let createdAt: String
+    
+    private enum CodingKeys: String, CodingKey {
+        case name, tagline,link, logo
+        case sponsorType = "sponsor_type"
+        case createdAt = "created_at"
+    }
 }
 
-struct SponsorRespDTO: Codable {
+struct SponsorsRespDTO: Codable {
     let data: [SponsorDTO]
 }
