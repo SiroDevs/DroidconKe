@@ -20,9 +20,6 @@ struct HomeTab: View {
                     Text(L10n.welcomeToDroidconKe)
                         .font(.system(size: 20, weight: .bold))
                     
-                    Text(L10n.welcomeToDroidconKe)
-                        .font(.system(size: 20, weight: .bold))
-                    
                     SessionSection(sessions: viewModel.sessions)
                     
                     SpeakerSection(speakers: viewModel.speakers)

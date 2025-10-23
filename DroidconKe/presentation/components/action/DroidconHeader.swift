@@ -29,14 +29,15 @@ struct DroidconHeader: View {
                         Image(systemName: "face.smiling")
                         Text("Feedback")
                             .font(.system(size: 15, weight: .medium))
-                        Image(systemName: "paperplane.fill")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(.scrim)
+                        Image(.sendIcon)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height: 20)
                     }
                     .foregroundColor(.primary)
                     .padding(.horizontal, 14)
                     .padding(.vertical, 8)
-                    .background(.onSecondary)
+                    .background(.accent)
                     .clipShape(Capsule())
                 }
             }
@@ -46,5 +47,5 @@ struct DroidconHeader: View {
 }
 
 #Preview {
-    TestTab()
+    DroidconHeader(showFeedback: true)
 }
