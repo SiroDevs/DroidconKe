@@ -16,19 +16,19 @@ Built with **SwiftUI**, **Core Data**, the app offers an intuitive and fast expe
 ### 1. iPhone
 <table>
     <tr>
-        <td><img src="screenshots/iphone/screenshot1.png" width="200px" /></td>
-        <td><img src="screenshots/iphone/screenshot2.png" width="200px" /></td>
-        <td><img src="screenshots/iphone/screenshot3.png" width="200px" /></td>
-        <td><img src="screenshots/iphone/screenshot4.png" width="200px" /></td>
+        <td><img src="Screenshots/iphone/Image1.png" width="200px" /></td>
+        <td><img src="Screenshots/iphone/Image2.png" width="200px" /></td>
+        <td><img src="Screenshots/iphone/Image3.png" width="200px" /></td>
+        <td><img src="Screenshots/iphone/Image4.png" width="200px" /></td>
     </tr>
 </table>
 
 ### 1. iPad
 <table>
     <tr>
-        <td><img src="screenshots/ipad/screenshot1.png" width="200px" /></td>
-        <td><img src="screenshots/ipad/screenshot2.png" width="200px" /></td>
-        <td><img src="screenshots/ipad/screenshot3.png" width="200px" /></td>
+        <td><img src="Screenshots/ipad/Image1.png" width="200px" /></td>
+        <td><img src="Screenshots/ipad/Image2.png" width="200px" /></td>
+        <td><img src="Screenshots/ipad/Image3.png" width="200px" /></td>
     </tr>
 </table>
 
