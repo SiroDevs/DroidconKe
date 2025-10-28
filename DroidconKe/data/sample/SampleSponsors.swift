@@ -12,7 +12,7 @@ extension SponsorEntity {
             tagline: "sponsor tagline",
             link: "https://typesense.org/",
             logo: "https://res.cloudinary.com/droidconke/image/upload/v1759164634/prod/upload/event_sponsors/xrwhr6wmofpiz5l0igac.svg",
-            sponsorType: "bronze",
+            sponsorType: "gold",
             createdAt: "2025-09-29 19:50:35"
         ),
         SponsorEntity(

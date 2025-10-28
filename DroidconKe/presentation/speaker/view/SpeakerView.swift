@@ -36,7 +36,6 @@ struct SpeakerView: View {
         .navigationBarHidden(true)
         .background(Color(.systemBackground))
         .onAppear {
-//            viewModel.fetchSpeakerDetails(speakerId: speaker.id)
         }
     }
     

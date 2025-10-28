@@ -8,6 +8,7 @@
 import Foundation
 
 final class MainViewModel: ObservableObject {
+    private let netUtils: NetworkUtils
     private let feedRepo: FeedRepoProtocol
     private let organizerRepo: OrganizerRepoProtocol
     private let sessionRepo: SessionRepoProtocol
@@ -20,15 +21,18 @@ final class MainViewModel: ObservableObject {
     @Published var speakers: [SpeakerEntity] = []
     @Published var sponsors: [SponsorEntity] = []
     @Published var uiState: UiState = .idle
+    @Published var isOnline: Bool = false
 
 
     init(
+        netUtils: NetworkUtils = .shared,
         feedRepo: FeedRepoProtocol,
         organizerRepo: OrganizerRepoProtocol,
         sessionRepo: SessionRepoProtocol,
         speakerRepo: SpeakerRepoProtocol,
         sponsorRepo: SponsorRepoProtocol
     ) {
+        self.netUtils = netUtils
         self.feedRepo = feedRepo
         self.organizerRepo = organizerRepo
         self.sessionRepo = sessionRepo
@@ -36,12 +40,17 @@ final class MainViewModel: ObservableObject {
         self.sponsorRepo = sponsorRepo
     }
 
-    func initializeData() {
-        Task {
-            await syncData()
+    func initialize() {
+        Task { @MainActor in
+            isOnline = await netUtils.checkNetworkAvailability()
+            if isOnline {
+                await syncData()
+            } else {
+                await fetchSessionsLocally()
+            }
         }
     }
-
+    
     @MainActor
     func syncData() async {
         uiState = .loading
@@ -68,21 +77,23 @@ final class MainViewModel: ObservableObject {
         } catch {
             uiState = .error("Failed: \(error.localizedDescription)")
 
+            print("❌ Syncing failed: \(error)")
             if sessions.isEmpty {
                 await fetchSessionsLocally()
             }
 
-            print("❌ Syncing failed: \(error)")
         }
     }
 
     private func fetchSessionsLocally() async {
+        uiState = .loading
         let localSessions = await Task.detached { self.sessionRepo.fetchLocalData() }.value
         let localSpeakers = await Task.detached { self.speakerRepo.fetchLocalData() }.value
 
         if !localSessions.isEmpty {
             sessions = localSessions
             speakers = localSpeakers
+            uiState = .loaded
         } else {
             print("No sessions found")
         }

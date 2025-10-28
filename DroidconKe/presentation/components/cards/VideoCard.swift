@@ -16,35 +16,40 @@ struct VideoCard: View {
     @State private var cancellables = Set<AnyCancellable>()
     
     var body: some View {
-        VideoPlayer(player: player) {
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    Image(systemName: "play.circle.fill")
-                        .font(.largeTitle)
-                        .foregroundColor(.white)
-                        .opacity(isPlaying ? 0 : 0.8)
-                    Spacer()
+        GeometryReader { geometry in
+            VStack(spacing: 0) {
+                VideoPlayer(player: player) {
+                    VStack {
+                        Spacer()
+                        HStack {
+                            Spacer()
+                            Image(systemName: "play.circle.fill")
+                                .font(.system(size: min(geometry.size.width, geometry.size.height) * 0.1))
+                                .foregroundColor(.white)
+                                .opacity(isPlaying ? 0 : 0.8)
+                            Spacer()
+                        }
+                        Spacer()
+                        
+                        HStack {
+                            Image(systemName: "speaker.slash.fill")
+                                .font(.caption)
+                                .foregroundColor(.white)
+                                .padding(8)
+                                .background(Color.black.opacity(0.7))
+                                .cornerRadius(4)
+                            Spacer()
+                        }
+                        .padding()
+                    }
                 }
-                Spacer()
-                
-                // Optional: Add a muted indicator
-                HStack {
-                    Image(systemName: "speaker.slash.fill")
-                        .font(.caption)
-                        .foregroundColor(.white)
-                        .padding(8)
-                        .background(Color.black.opacity(0.7))
-                        .cornerRadius(4)
-                    Spacer()
-                }
-                .padding()
             }
+            .frame(height: videoHeight(for: geometry.size))
+            .cornerRadius(12)
+            .padding(.horizontal, horizontalPadding(for: geometry.size))
+            .padding(.vertical, verticalPadding(for: geometry.size))
         }
-        .frame(height: 250)
-        .cornerRadius(12)
-        .padding()
+        .frame(height: UIDevice.current.userInterfaceIdiom == .pad ? 400 : 225)
         .onAppear {
             setupPlayer()
         }
@@ -52,28 +57,57 @@ struct VideoCard: View {
             player.pause()
             cancellables.removeAll()
         }
+        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+        }
+    }
+    
+    private func videoHeight(for size: CGSize) -> CGFloat {
+        let isiPad = UIDevice.current.userInterfaceIdiom == .pad
+        let isLandscape = size.width > size.height
+        
+        if isiPad {
+            return isLandscape ? 350 : 400
+        } else {
+            return isLandscape ? 225 : 300
+        }
+    }
+    
+    private func horizontalPadding(for size: CGSize) -> CGFloat {
+        let isiPad = UIDevice.current.userInterfaceIdiom == .pad
+        return isiPad ? 24 : 16
+    }
+    
+    private func verticalPadding(for size: CGSize) -> CGFloat {
+        let isiPad = UIDevice.current.userInterfaceIdiom == .pad
+        return isiPad ? 12 : 8
     }
     
     private func setupPlayer() {
         let playerItem = AVPlayerItem(url: videoURL)
         player.replaceCurrentItem(with: playerItem)
         
-        // Mute the player
         player.isMuted = true
+        player.automaticallyWaitsToMinimizeStalling = false
         
-        // Use Combine to observe player status
+        let playerViewController = AVPlayerViewController()
+        playerViewController.videoGravity = .resizeAspectFill
+        
         NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)
             .sink { _ in
-                // Loop the video when it ends
                 player.seek(to: .zero)
                 player.play()
             }
             .store(in: &cancellables)
         
-        // Start playing immediately
-        player.play()
+        player.publisher(for: \.status)
+            .receive(on: RunLoop.main)
+            .sink { status in
+                if status == .readyToPlay {
+                    player.play()
+                }
+            }
+            .store(in: &cancellables)
         
-        // Observe play status
         player.publisher(for: \.timeControlStatus)
             .receive(on: RunLoop.main)
             .sink { status in

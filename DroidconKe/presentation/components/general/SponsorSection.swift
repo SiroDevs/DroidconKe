@@ -14,125 +14,54 @@ struct SponsorsSection: View {
         Dictionary(grouping: sponsors) { $0.sponsorType?.lowercased() ?? "other" }
     }
     
-    private let sponsorTypeOrder = ["platinum", "gold", "silver", "bronze", "other"]
+    private var platinumSponsor: SponsorEntity? {
+        groupedSponsors["platinum"]?.first
+    }
+    
+    private var otherSponsors: [SponsorEntity] {
+        let excludedTypes = ["platinum"]
+        return sponsors.filter { sponsor in
+            guard let type = sponsor.sponsorType?.lowercased() else { return true }
+            return !excludedTypes.contains(type)
+        }
+    }
     
     var body: some View {
-        VStack(alignment: .center, spacing: 10) {
+        VStack(alignment: .center) {
             Text("Sponsors")
                 .font(.title2)
                 .fontWeight(.semibold)
-                .padding(.horizontal)
                 .foregroundColor(.onPrimary)
             
-            LazyVStack(alignment: .leading, spacing: 10) {
-                ForEach(sponsorTypeOrder, id: \.self) { sponsorType in
-                    if let sponsorsOfType = groupedSponsors[sponsorType], !sponsorsOfType.isEmpty {
-                        SponsorTypeSection(
-                            sponsors: sponsorsOfType,
-                            type: sponsorType
-                        )
+            if let platinumSponsor = platinumSponsor {
+                SponsorCard(
+                    sponsor: platinumSponsor,
+                    size: CGSize(width: 200, height: 100)
+                )
+            }
+            
+            if !otherSponsors.isEmpty {
+                VStack(alignment: .center) {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 5) {
+                            ForEach(otherSponsors, id: \.id) { sponsor in
+                                SponsorCard(
+                                    sponsor: sponsor,
+                                    size: CGSize(width: 80, height: 60)
+                                )
+                            }
+                        }
+                        .padding(.horizontal)
                     }
                 }
             }
         }
-        .padding(20)
+        .padding(10)
         .background(
-            RoundedRectangle(cornerRadius: 16)
+            RoundedRectangle(cornerRadius: 10)
                 .fill(Color.gray.opacity(0.15))
         )
         .padding(.horizontal)
-    }
-}
-
-struct SponsorTypeSection: View {
-    let sponsors: [SponsorEntity]
-    let type: String
-    
-    private var displayName: String {
-        type.capitalized
-    }
-    
-    private var isPlatinum: Bool {
-        type.lowercased() == "platinum"
-    }
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            if isPlatinum {
-                platinumSponsorsView
-            } else {
-                otherSponsorsView
-            }
-        }
-    }
-    
-    private var platinumSponsorsView: some View {
-        LazyVStack(spacing: 10) {
-            ForEach(sponsors, id: \.id) { sponsor in
-                SponsorCard(
-                    sponsor: sponsor,
-                    size: CGSize(width: 160, height: 100)
-                )
-                .frame(maxWidth: .infinity)
-            }
-        }
-        .padding(.horizontal)
-    }
-    
-    private var otherSponsorsView: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 24) {
-                ForEach(sponsors, id: \.id) { sponsor in
-                    SponsorCard(
-                        sponsor: sponsor,
-                        size: CGSize(width: 80, height: 60)
-                    )
-                }
-            }
-            .padding(.horizontal)
-        }
-    }
-}
-
-struct SponsorTypeGridSection: View {
-    let sponsors: [SponsorEntity]
-    let type: String
-    let columns: [GridItem]
-    
-    init(sponsors: [SponsorEntity], type: String, columnsCount: Int = 3) {
-        self.sponsors = sponsors
-        self.type = type
-        self.columns = Array(repeating: GridItem(.flexible()), count: columnsCount)
-    }
-    
-    private var isPlatinum: Bool {
-        type.lowercased() == "platinum"
-    }
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            if isPlatinum {
-                LazyVGrid(columns: [GridItem(.flexible())], spacing: 20) {
-                    ForEach(sponsors, id: \.id) { sponsor in
-                        SponsorCard(
-                            sponsor: sponsor,
-                            size: CGSize(width: 160, height: 120)
-                        )
-                    }
-                }
-                .padding(.horizontal)
-            } else {
-                LazyVGrid(columns: columns, spacing: 20) {
-                    ForEach(sponsors, id: \.self) { sponsor in
-                        SponsorCard(
-                            sponsor: sponsor,
-                            size: CGSize(width: 80, height: 60)
-                        )
-                    }
-                }
-                .padding(.horizontal)
-            }
-        }
     }
 }
 

@@ -40,7 +40,7 @@ struct SpeakerCard: View {
 }
 
 #Preview {
-    SpeakerSection(
+    SpeakersSection(
         speakers: SpeakerEntity.sampleSpeakers
     )
 }

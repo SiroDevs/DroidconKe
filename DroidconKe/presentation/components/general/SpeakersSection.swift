@@ -1,5 +1,5 @@
 //
-//  SpeakerSection.swift
+//  SpeakersSection.swift
 //  DroidconKe
 //
 //  Created by @sirodevs on 23/10/2025.
@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct SpeakerSection: View {
+struct SpeakersSection: View {
     let speakers: [SpeakerEntity]
     
     private var randomSpeakers: [SpeakerEntity] {
-        Array(speakers.shuffled().prefix(7))
+        Array(speakers.shuffled().prefix(10))
     }
     
     var body: some View {
@@ -24,8 +24,9 @@ struct SpeakerSection: View {
                 Spacer()
 
                 if !speakers.isEmpty {
-                    Button(action: {
-                    }) {
+                    NavigationLink(
+                        destination: SpeakersView(speakers: speakers))
+                    {
                         HStack(spacing: 6) {
                             Text("View All")
                                 .font(.subheadline)
@@ -63,7 +64,7 @@ struct SpeakerSection: View {
 }
 
 #Preview {
-    SpeakerSection(
+    SpeakersSection(
         speakers: SpeakerEntity.sampleSpeakers
     )
 }

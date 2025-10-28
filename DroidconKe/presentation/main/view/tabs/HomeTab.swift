@@ -15,17 +15,19 @@ struct HomeTab: View {
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
-                LazyVStack(alignment: .center, spacing: 10) {
+                LazyVStack(alignment: .center) {
                     DroidconHeader(showFeedback: false)
                     
-                    VideoCard()
+                    if viewModel.isOnline {
+                        VideoCard()
+                    }
                     
-                    SessionSection(
+                    SessionsSection(
                         sessions: viewModel.sessions,
                         selectedTab: $selectedTab
                     )
                     
-                    SpeakerSection(speakers: viewModel.speakers)
+                    SpeakersSection(speakers: viewModel.speakers)
                     
                     SponsorsSection(sponsors: viewModel.sponsors)
                     

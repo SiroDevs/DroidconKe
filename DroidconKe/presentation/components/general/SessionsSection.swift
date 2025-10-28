@@ -1,5 +1,5 @@
 //
-//  SessionSection.swift
+//  SessionsSection.swift
 //  DroidconKe
 //
 //  Created by @sirodevs on 23/10/2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SessionSection: View {
+struct SessionsSection: View {
     let sessions: [SessionEntity]
     @Binding var selectedTab: Tabbed
     
@@ -17,7 +17,7 @@ struct SessionSection: View {
         
         let sessionsToUse = filteredSessions.isEmpty ? sessions : filteredSessions
         
-        return Array(sessionsToUse.shuffled().prefix(4))
+        return Array(sessionsToUse.shuffled().prefix(5))
     }
     
     var body: some View {
@@ -70,7 +70,7 @@ struct SessionSection: View {
 }
 
 #Preview {
-//    SessionSection(
+//    SessionsSection(
 //        sessions: SessionEntity.sampleSessions, selectedTab: 2
 //    )
 }
