@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeTab: View {
     @ObservedObject var viewModel: MainViewModel
     @State private var barHidden = true
+    @Binding var selectedTab: Tabbed
     
     var body: some View {
         NavigationStack {
@@ -17,10 +18,12 @@ struct HomeTab: View {
                 LazyVStack(alignment: .center, spacing: 10) {
                     DroidconHeader(showFeedback: false)
                     
-                    Text(L10n.welcomeToDroidconKe)
-                        .font(.system(size: 20, weight: .bold))
+                    VideoCard()
                     
-                    SessionSection(sessions: viewModel.sessions)
+                    SessionSection(
+                        sessions: viewModel.sessions,
+                        selectedTab: $selectedTab
+                    )
                     
                     SpeakerSection(speakers: viewModel.speakers)
                     
@@ -29,6 +32,7 @@ struct HomeTab: View {
                     OrganizersSection(organizers: viewModel.organizers)
                 }
             }
+            .background(Color(.surfaceTint))
         }
         .animation(.default, value: barHidden)
         .edgesIgnoringSafeArea(.all)

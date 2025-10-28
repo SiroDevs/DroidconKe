@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SessionSection: View {
     let sessions: [SessionEntity]
+    @Binding var selectedTab: Tabbed
     
     private var randomSessions: [SessionEntity] {
         let filteredSessions = sessions.filter { $0.sessionFormat.isEmpty == false }
@@ -30,6 +31,7 @@ struct SessionSection: View {
 
                 if !sessions.isEmpty {
                     Button(action: {
+                        selectedTab = .sessions
                     }) {
                         HStack(spacing: 6) {
                             Text("View All")
@@ -68,7 +70,7 @@ struct SessionSection: View {
 }
 
 #Preview {
-    SessionSection(
-        sessions: SessionEntity.sampleSessions
-    )
+//    SessionSection(
+//        sessions: SessionEntity.sampleSessions, selectedTab: 2
+//    )
 }

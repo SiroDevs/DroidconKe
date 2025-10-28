@@ -19,7 +19,7 @@ struct SpeakerCard: View {
                     .resizable()
                     .scaledToFill()
             } placeholder: {
-                Color.gray.opacity(0.2)
+                Color(.surface)
             }
             .frame(width: size, height: size)
             .clipShape(RoundedRectangle(cornerRadius: 12))

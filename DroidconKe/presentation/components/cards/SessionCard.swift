@@ -31,7 +31,7 @@ struct SessionCard: View {
                 .cornerRadius(12, corners: [.topLeft, .topRight])
             
             sessionInfoView
-                .background(Color(.systemGray6))
+                .background(Color(.surface))
                 .cornerRadius(12, corners: [.bottomLeft, .bottomRight])
         }
         .frame(width: 260)

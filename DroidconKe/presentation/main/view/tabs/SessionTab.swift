@@ -128,6 +128,7 @@ struct SessionTab: View {
             .onChange(of: viewModel.sessions) { _ in
                 setDefaultDate()
             }
+            .background(Color(.surfaceTint))
         }
     }
 }

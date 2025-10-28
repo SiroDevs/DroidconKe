@@ -26,23 +26,8 @@ struct SettingsTab: View {
                     }
                     .pickerStyle(.inline)
                 }
-
-//                SettingsSection(header: "Maoni") {
-//                    SettingsRow(
-//                        systemImage: "text.badge.star",
-//                        title: L10n.leaveReview,
-//                        subtitle: L10n.leaveReviewDesc,
-//                        action: viewModel.promptReview
-//                    )
-//                    SettingsRow(
-//                        systemImage: "envelope",
-//                        title: L10n.contactUs,
-//                        subtitle: L10n.contactUsDesc,
-//                        action: AppUtilities.sendEmail
-//                    )
-//                }
-
             }
+            .background(Color(.surfaceTint))
             .navigationTitle("Settings")
             .toolbarBackground(.regularMaterial, for: .navigationBar)
         }

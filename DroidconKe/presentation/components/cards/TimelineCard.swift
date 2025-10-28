@@ -39,12 +39,10 @@ struct TimelineCard: View {
                         .lineLimit(2)
                         .multilineTextAlignment(.leading)
                     
-                    // Time and room
                     Text("\(formatTime(session.startTime)) - \(formatTime(session.endTime)) | \(session.roomNames)")
                         .font(.system(size: 13, weight: .medium))
                         .foregroundColor(.secondary)
                     
-                    // Speakers
                     if session.hasSpeakers {
                         HStack(spacing: 12) {
                             ForEach(session.speakers.prefix(3)) { speaker in

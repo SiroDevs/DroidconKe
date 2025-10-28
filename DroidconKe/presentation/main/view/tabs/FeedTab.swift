@@ -19,6 +19,7 @@ struct FeedTab: View {
                     EmptyState()
                 }
             }
+            .background(Color(.surfaceTint))
         }
     }
 }

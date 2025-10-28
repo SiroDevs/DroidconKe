@@ -11,6 +11,7 @@ struct AppConstants {
     static let appTitle = "DroidconKe"
     static let appCredits = "© Siro Devs"
     
+    static let videoUrl = "https://droidcon.co.ke/video/dcke25_report.mp4"
     static let baseUrl = "https://api.droidcon.co.ke/v1"
 }
 
