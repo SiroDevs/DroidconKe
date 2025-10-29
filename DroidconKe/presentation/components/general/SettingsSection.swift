@@ -19,35 +19,37 @@ struct SettingsSection<Content: View>: View {
 }
 
 struct SettingsRow<Content: View>: View {
-    let systemImage: String
     let title: String
     let subtitle: String?
     let foregroundColor: Color
     let action: (() -> Void)?
+    let icon: String?
     @ViewBuilder let trailing: Content
     
     init(
-        systemImage: String,
         title: String,
         subtitle: String? = nil,
         foregroundColor: Color = .primary,
         action: (() -> Void)? = nil,
+        icon: String? = nil,
         @ViewBuilder trailing: () -> Content = { EmptyView() }
     ) {
-        self.systemImage = systemImage
         self.title = title
         self.subtitle = subtitle
         self.foregroundColor = foregroundColor
         self.action = action
+        self.icon = icon
         self.trailing = trailing()
     }
     
     var body: some View {
         let row = HStack {
-            Image(systemName: systemImage)
-                .frame(width: 24, height: 24)
-                .foregroundColor(foregroundColor)
-
+            if let icon = icon {
+                Image(systemName: icon)
+                    .frame(width: 24, height: 24)
+                    .foregroundColor(foregroundColor)
+            }
+            
             VStack(alignment: .leading) {
                 Text(title).font(.headline).foregroundColor(foregroundColor)
                 if let subtitle = subtitle {

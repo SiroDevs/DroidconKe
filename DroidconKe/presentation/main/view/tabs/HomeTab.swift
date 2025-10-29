@@ -9,7 +9,6 @@ import SwiftUI
 
 struct HomeTab: View {
     @ObservedObject var viewModel: MainViewModel
-    @State private var barHidden = true
     @Binding var selectedTab: Tabbed
     
     var body: some View {
@@ -34,7 +33,39 @@ struct HomeTab: View {
             }
             .background(Color(.surfaceTint))
         }
-        .animation(.default, value: barHidden)
         .edgesIgnoringSafeArea(.all)
     }
+}
+
+struct HomeTabPreview: View {
+    @Binding var selectedTab: Tabbed
+    
+    var body: some View {
+        NavigationStack {
+            ScrollView(showsIndicators: false) {
+                LazyVStack(alignment: .center) {
+                    DroidconHeader(showFeedback: false)
+                    
+                    VideoCard()
+                    
+                    SessionsSection(
+                        sessions: SessionEntity.sampleSessions,
+                        selectedTab: $selectedTab
+                    )
+                    
+                    SpeakersSection(speakers: SpeakerEntity.sampleSpeakers)
+                    
+                    SponsorsSection(sponsors: SponsorEntity.sampleSponsors)
+                    
+                    OrganizersSection(organizers: OrganizerEntity.sampleOrganizers)
+                }
+            }
+            .background(Color(.surfaceTint))
+        }
+        .edgesIgnoringSafeArea(.all)
+    }
+}
+
+#Preview {
+    HomeTabPreview(selectedTab: .constant(.home))
 }

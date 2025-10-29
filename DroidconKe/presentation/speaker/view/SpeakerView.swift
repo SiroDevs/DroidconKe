@@ -148,7 +148,7 @@ struct SpeakerView: View {
                     socialLinkRow(
                         icon: "bird.fill",
                         title: "Twitter Handle",
-                        value: twitterHandle,
+                        value: "@\(twitterHandle)",
                         url: "https://twitter.com/\(twitterHandle)"
                     )
                 }

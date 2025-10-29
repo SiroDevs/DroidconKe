@@ -8,16 +8,21 @@
 import SwiftUI
 
 struct SplashView: View {
-    @Environment(\.colorScheme) private var colorScheme
-    
     var body: some View {
         VStack {
-            Image(colorScheme == .dark ? .droidconDark : .droidcon)
-                .resizable()
-                .padding()
-
             Spacer()
-
+            Image(.dfCon).padding()
+            Image(.droidFlutter).padding(.horizontal, 50)
+            
+            Spacer().frame(height: 50)
+            
+            Divider()
+                .frame(height: 1)
+                .padding(.horizontal, 100)
+                .background(.scrim)
+            
+            Spacer().frame(height: 20)
+            
             HStack {
                 Text("© Siro Devs")
                     .font(.system(size: 20))

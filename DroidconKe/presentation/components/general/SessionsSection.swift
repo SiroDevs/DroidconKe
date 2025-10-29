@@ -11,14 +11,13 @@ struct SessionsSection: View {
     let sessions: [SessionEntity]
     @Binding var selectedTab: Tabbed
     
-    let isIpad = UIDevice.current.userInterfaceIdiom == .pad
     private var randomSessions: [SessionEntity] {
         let filteredSessions = sessions.filter { $0.sessionFormat.isEmpty == false }
         
         
         let sessionsToUse = filteredSessions.isEmpty ? sessions : filteredSessions
         
-        return Array(sessionsToUse.shuffled().prefix(isIpad ? 6 : 4))
+        return Array(sessionsToUse.shuffled().prefix(4))
     }
     
     var body: some View {
@@ -71,7 +70,8 @@ struct SessionsSection: View {
 }
 
 #Preview {
-//    SessionsSection(
-//        sessions: SessionEntity.sampleSessions, selectedTab: 2
-//    )
+    SessionsSection(
+        sessions: SessionEntity.sampleSessions,
+        selectedTab: .constant(.about),
+    )
 }

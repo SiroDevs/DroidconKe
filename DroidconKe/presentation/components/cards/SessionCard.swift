@@ -28,14 +28,14 @@ struct SessionCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             sessionContentView
-                .frame(height: 140)
+                .frame(height: isIpad ? 250 : 150)
                 .cornerRadius(12, corners: [.topLeft, .topRight])
             
             sessionInfoView
                 .background(Color(.surface))
                 .cornerRadius(12, corners: [.bottomLeft, .bottomRight])
         }
-        .frame(width: 260)
+        .frame(width: isIpad ? 400 : 260)
         .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
     }
     
@@ -171,7 +171,14 @@ struct RoundedCorner: Shape {
 }
 
 #Preview {
-    SessionCard(
-        session: SessionEntity.sampleSessions[0]
+    SessionsSection(
+        sessions: SessionEntity.sampleSessions,
+        selectedTab: .constant(.about),
     )
 }
+
+//#Preview {
+//    SessionCard(
+//        session: SessionEntity.sampleSessions[0]
+//    )
+//}

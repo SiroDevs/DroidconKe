@@ -9,7 +9,7 @@ import SwiftUI
 import Lottie
 
 struct LoadingState: View {
-    var fileName: String = "success"
+    var fileName: String
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
@@ -18,10 +18,7 @@ struct LoadingState: View {
             
             Spacer()
             
-            VStack(spacing: 10) {
-                LottieView(name: fileName)
-                    .frame(width: 300, height: 300)
-            }
+            LottieView(name: fileName)
             
             Spacer()
             
@@ -35,5 +32,5 @@ struct LoadingState: View {
 }
 
 #Preview {
-    LoadingState(fileName: "android")
+    LoadingState(fileName: "developerYoga")
 }

@@ -10,46 +10,50 @@ import AVKit
 import Combine
 
 struct VideoCard: View {
+    @Environment(\.verticalSizeClass) var verticalSizeClass
     let videoURL = URL(string: AppConstants.videoUrl)!
     @State private var player = AVPlayer()
     @State private var isPlaying = false
     @State private var cancellables = Set<AnyCancellable>()
     
+    let isIpad = UIDevice.current.userInterfaceIdiom == .pad
+    
+    private var isLandscape: Bool {
+        verticalSizeClass == .compact
+    }
+    
+    private var vidHeight: CGFloat {
+        if isIpad {
+            return 550
+        } else {
+            return isLandscape ? 300 : 200
+        }
+    }
+    
     var body: some View {
-        GeometryReader { geometry in
-            VStack(spacing: 0) {
-                VideoPlayer(player: player) {
-                    VStack {
+        VStack(spacing: 0) {
+            VideoPlayer(player: player) {
+                VStack {
+                    Spacer()
+                    HStack {
                         Spacer()
-                        HStack {
-                            Spacer()
-                            Image(systemName: "play.circle.fill")
-                                .font(.system(size: min(geometry.size.width, geometry.size.height) * 0.1))
-                                .foregroundColor(.white)
-                                .opacity(isPlaying ? 0 : 0.8)
-                            Spacer()
-                        }
+                        Image(systemName: "play.circle.fill")
+                            .font(.system(
+                                size: min(vidHeight, vidHeight) * 0.3)
+                            )
+                            .foregroundColor(.white)
+                            .opacity(isPlaying ? 0 : 0.8)
                         Spacer()
-                        
-                        HStack {
-                            Image(systemName: "speaker.slash.fill")
-                                .font(.caption)
-                                .foregroundColor(.white)
-                                .padding(8)
-                                .background(Color.black.opacity(0.7))
-                                .cornerRadius(4)
-                            Spacer()
-                        }
-                        .padding()
                     }
+                    Spacer()
                 }
             }
-            .frame(height: videoHeight(for: geometry.size))
-            .cornerRadius(12)
-            .padding(.horizontal, horizontalPadding(for: geometry.size))
-            .padding(.vertical, verticalPadding(for: geometry.size))
         }
-        .frame(height: UIDevice.current.userInterfaceIdiom == .pad ? 400 : 225)
+        .frame(height: vidHeight)
+        .cornerRadius(10)
+        .padding(.horizontal, isIpad ? 24 : 16)
+        .padding(.vertical, isIpad ? 12 : 8)
+        .frame(height: vidHeight)
         .onAppear {
             setupPlayer()
         }
@@ -66,20 +70,10 @@ struct VideoCard: View {
         let isLandscape = size.width > size.height
         
         if isIpad {
-            return isLandscape ? 350 : 400
+            return isLandscape ? 500 : 400
         } else {
-            return isLandscape ? 225 : 300
+            return isLandscape ? 220 : 225
         }
-    }
-    
-    private func horizontalPadding(for size: CGSize) -> CGFloat {
-        let isiPad = UIDevice.current.userInterfaceIdiom == .pad
-        return isiPad ? 24 : 16
-    }
-    
-    private func verticalPadding(for size: CGSize) -> CGFloat {
-        let isiPad = UIDevice.current.userInterfaceIdiom == .pad
-        return isiPad ? 12 : 8
     }
     
     private func setupPlayer() {
@@ -95,7 +89,7 @@ struct VideoCard: View {
         NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)
             .sink { _ in
                 player.seek(to: .zero)
-                player.play()
+//                player.play()
             }
             .store(in: &cancellables)
         
@@ -115,4 +109,8 @@ struct VideoCard: View {
             }
             .store(in: &cancellables)
     }
+}
+
+#Preview {
+    HomeTabPreview(selectedTab: .constant(.home))
 }

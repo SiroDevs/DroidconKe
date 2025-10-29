@@ -8,37 +8,59 @@
 import SwiftUI
 
 struct MainView: View {
-    @StateObject private var viewModel: MainViewModel = {
-        DiContainer.shared.resolve(MainViewModel.self)
-    }()
+    @StateObject private var viewModel: MainViewModel
+    @State private var selectedTab: Tabbed
+    private let prefsRepo: PrefsRepoProtocol
     
-    @State private var selectedTab: Tabbed = .home
+    @State private var showingSettingsSheet = false
     
+    init() {
+        let container = DiContainer.shared
+        let prefsRepo = container.resolve(PrefsRepo.self)
+        
+        self.prefsRepo = prefsRepo
+        _viewModel = StateObject(wrappedValue: container.resolve(MainViewModel.self))
+        _selectedTab = State(initialValue: prefsRepo.conTypeSet ? .home : .settings)
+        _showingSettingsSheet = State(initialValue: !prefsRepo.conTypeSet)
+    }
+
     var body: some View {
         stateContent
             .edgesIgnoringSafeArea(.bottom)
-            .task { await viewModel.syncData() }
+            .task {
+                if prefsRepo.conTypeSet {
+                    await viewModel.syncData()
+                }
+            }
+            .sheet(isPresented: $showingSettingsSheet) {
+                SettingsTab(viewModel: viewModel)
+                    .interactiveDismissDisabled(!prefsRepo.conTypeSet)
+            }
     }
     
     @ViewBuilder
     private var stateContent: some View {
         switch viewModel.uiState {
             case .loading:
-                LoadingState(fileName: "android")
+                LoadingState(fileName: "developerYoga")
                 
             case .error(let msg):
                 ErrorState(message: msg) {
-                    Task { await viewModel.syncData() }
+                    Task {
+                        if prefsRepo.conTypeSet {
+                            await viewModel.syncData()
+                        }
+                    }
                 }
                 
             case .loaded:
-                TabView(selection: $selectedTab) { // Add selection binding here
+                TabView(selection: $selectedTab) {
                     HomeTab(viewModel: viewModel, selectedTab: $selectedTab)
                         .tabItem {
                             Image(systemName: "house.fill")
                             Text("Home")
                         }
-                        .tag(Tabbed.home) // Use enum cases instead of raw values
+                        .tag(Tabbed.home)
                     
                     FeedTab(viewModel: viewModel)
                         .tabItem {

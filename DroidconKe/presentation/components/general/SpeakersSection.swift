@@ -8,11 +8,24 @@
 import SwiftUI
 
 struct SpeakersSection: View {
+    @Environment(\.verticalSizeClass) var verticalSizeClass
     let speakers: [SpeakerEntity]
     
     let isIpad = UIDevice.current.userInterfaceIdiom == .pad
     private var randomSpeakers: [SpeakerEntity] {
         Array(speakers.shuffled().prefix(isIpad ? 10 : 5))
+    }
+    
+    private var isLandscape: Bool {
+        verticalSizeClass == .compact
+    }
+    
+    private var size: CGFloat {
+        if isIpad {
+            return 200
+        } else {
+            return isLandscape ? 120 : 85
+        }
     }
     
     var body: some View {
@@ -53,7 +66,9 @@ struct SpeakersSection: View {
                         NavigationLink {
                             SpeakerView(speaker: speaker)
                         } label: {
-                            SpeakerCard(speaker: speaker)
+                            SpeakerCard(
+                                speaker: speaker, size: size
+                            )
                         }
                     }
                 }
@@ -66,7 +81,6 @@ struct SpeakersSection: View {
 
 #Preview {
     SpeakersSection(
-        isIpad: UIDevice.current.userInterfaceIdiom == .pad,
         speakers: SpeakerEntity.sampleSpeakers
     )
 }

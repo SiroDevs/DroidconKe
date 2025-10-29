@@ -16,8 +16,9 @@ struct AppConstants {
 }
 
 struct PrefConstants {
-    static let defaultEvent = "all"
-    static let eventType = "eventTypeKey"
+    static let defaultConType = "droidcon"
+    static let conTypeSet = "conTypeSetKey"
+    static let conType = "conTypeKey"
 }
 
 struct AppSecrets {
