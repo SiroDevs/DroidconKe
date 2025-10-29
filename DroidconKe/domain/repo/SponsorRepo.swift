@@ -6,7 +6,7 @@
 //
 
 protocol SponsorRepoProtocol {
-    func fetchRemoteData() async throws -> [SponsorEntity]
+    func fetchRemoteData(conType: ConFilter) async throws -> [SponsorEntity]
     func fetchLocalData() async throws -> [SponsorEntity]
     func saveData(_ sponsors: [SponsorEntity])
     func clearAllData()
@@ -24,9 +24,35 @@ class SponsorRepo: SponsorRepoProtocol {
         self.sponsorDm = sponsorDm
     }
     
-    func fetchRemoteData() async throws -> [SponsorEntity] {
+    func fetchRemoteData(conType: ConFilter) async throws -> [SponsorEntity] {
+        switch conType {
+            case .all:
+                async let droidconTask = fetchDroidconSponsors()
+                async let flutterconTask = fetchFlutterconSponsors()
+                
+                let (droidconSponsors, flutterconSponsors) = try await (droidconTask, flutterconTask)
+                return droidconSponsors + flutterconSponsors
+                
+            case .droidcon:
+                return try await fetchDroidconSponsors()
+                
+            case .fluttercon:
+                return try await fetchFlutterconSponsors()
+        }
+    }
+
+    private func fetchDroidconSponsors() async throws -> [SponsorEntity] {
         let response: SponsorsRespDTO = try await apiService.fetch(
             endpoint: .sponsors(eventSlug: AppSecrets.droidcon_slug)
+        )
+        return response.data.map { dto in
+            SponsorMapper.dtoToEntity(dto)
+        }
+    }
+
+    private func fetchFlutterconSponsors() async throws -> [SponsorEntity] {
+        let response: SponsorsRespDTO = try await apiService.fetch(
+            endpoint: .sponsors(eventSlug: AppSecrets.fluttercon_slug)
         )
         return response.data.map { dto in
             SponsorMapper.dtoToEntity(dto)

@@ -33,7 +33,7 @@ struct MainView: View {
                 }
             }
             .sheet(isPresented: $showingSettingsSheet) {
-                SettingsTab(viewModel: viewModel)
+                SettingsTab(viewModel: viewModel, isPresentedAsSheet: true)
                     .interactiveDismissDisabled(!prefsRepo.conTypeSet)
             }
     }
@@ -83,7 +83,7 @@ struct MainView: View {
                         }
                         .tag(Tabbed.about)
                     
-                    SettingsTab(viewModel: viewModel)
+                    SettingsTab(viewModel: viewModel, isPresentedAsSheet: false)
                         .tabItem {
                             Image(systemName: "gear")
                             Text("Settings")

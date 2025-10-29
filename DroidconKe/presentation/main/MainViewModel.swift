@@ -22,7 +22,7 @@ final class MainViewModel: ObservableObject {
     @Published var speakers: [SpeakerEntity] = []
     @Published var sponsors: [SponsorEntity] = []
     @Published var uiState: UiState = .idle
-    @Published var selectedConFilter: ConFilter = .droidcon
+    @Published var conType: ConFilter = .droidcon
 
     init(
         prefsRepo: PrefsRepo,
@@ -40,7 +40,7 @@ final class MainViewModel: ObservableObject {
         self.sessionRepo = sessionRepo
         self.speakerRepo = speakerRepo
         self.sponsorRepo = sponsorRepo
-        self.selectedConFilter = ConFilter(rawValue: prefsRepo.conType) ?? .droidcon
+        self.conType = ConFilter(rawValue: prefsRepo.conType) ?? .droidcon
     }
 
     func syncData() async {
@@ -54,9 +54,9 @@ final class MainViewModel: ObservableObject {
         }
     }
     
-    func updateConFilter(_ filter: ConFilter) {
-        selectedConFilter = filter
-        prefsRepo.conType = filter.rawValue
+    func updateConFilter(_ newFilter: ConFilter) {
+        conType = newFilter
+        prefsRepo.conType = newFilter.rawValue
         prefsRepo.conTypeSet = true
         
         Task { @MainActor in
@@ -70,8 +70,8 @@ final class MainViewModel: ObservableObject {
 
         do {
             async let organizersTask = organizerRepo.fetchRemoteData()
-            async let sessionsTask = sessionRepo.fetchRemoteData()
-            async let sponsorsTask = sponsorRepo.fetchRemoteData()
+            async let sessionsTask = sessionRepo.fetchRemoteData(conType: conType)
+            async let sponsorsTask = sponsorRepo.fetchRemoteData(conType: conType)
 
             let (remoteOrganizers, remoteSessions, remoteSponsors) = try await (
                 organizersTask,
