@@ -10,8 +10,9 @@ import SwiftUI
 struct SpeakersSection: View {
     let speakers: [SpeakerEntity]
     
+    let isIpad = UIDevice.current.userInterfaceIdiom == .pad
     private var randomSpeakers: [SpeakerEntity] {
-        Array(speakers.shuffled().prefix(10))
+        Array(speakers.shuffled().prefix(isIpad ? 10 : 5))
     }
     
     var body: some View {
@@ -65,6 +66,7 @@ struct SpeakersSection: View {
 
 #Preview {
     SpeakersSection(
+        isIpad: UIDevice.current.userInterfaceIdiom == .pad,
         speakers: SpeakerEntity.sampleSpeakers
     )
 }

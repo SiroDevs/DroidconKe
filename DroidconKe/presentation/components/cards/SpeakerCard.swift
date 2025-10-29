@@ -12,6 +12,7 @@ struct SpeakerCard: View {
     var borderColor: Color = .cyan
     var size: CGFloat = 70
     
+    let isIpad = UIDevice.current.userInterfaceIdiom == .pad
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             AsyncImage(url: URL(string: speaker.avatar)) { image in

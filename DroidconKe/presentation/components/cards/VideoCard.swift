@@ -62,10 +62,10 @@ struct VideoCard: View {
     }
     
     private func videoHeight(for size: CGSize) -> CGFloat {
-        let isiPad = UIDevice.current.userInterfaceIdiom == .pad
+        let isIpad = UIDevice.current.userInterfaceIdiom == .pad
         let isLandscape = size.width > size.height
         
-        if isiPad {
+        if isIpad {
             return isLandscape ? 350 : 400
         } else {
             return isLandscape ? 225 : 300

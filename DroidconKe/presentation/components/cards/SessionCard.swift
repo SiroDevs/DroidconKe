@@ -10,6 +10,7 @@ import SwiftUI
 struct SessionCard: View {
     let session: SessionEntity
     
+    let isIpad = UIDevice.current.userInterfaceIdiom == .pad
     private var hasSessionImage: Bool {
         guard let sessionImage = session.sessionImage else { return false }
         return !sessionImage.isEmpty

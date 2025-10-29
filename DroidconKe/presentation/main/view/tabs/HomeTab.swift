@@ -18,9 +18,7 @@ struct HomeTab: View {
                 LazyVStack(alignment: .center) {
                     DroidconHeader(showFeedback: false)
                     
-                    if viewModel.isOnline {
-                        VideoCard()
-                    }
+                    VideoCard()
                     
                     SessionsSection(
                         sessions: viewModel.sessions,
