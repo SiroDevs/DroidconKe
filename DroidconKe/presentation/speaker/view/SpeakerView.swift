@@ -36,7 +36,6 @@ struct SpeakerView: View {
         .navigationBarHidden(true)
         .background(Color(.systemBackground))
         .onAppear {
-//            viewModel.fetchSpeakerDetails(speakerId: speaker.id)
         }
     }
     
@@ -149,7 +148,7 @@ struct SpeakerView: View {
                     socialLinkRow(
                         icon: "bird.fill",
                         title: "Twitter Handle",
-                        value: twitterHandle,
+                        value: "@\(twitterHandle)",
                         url: "https://twitter.com/\(twitterHandle)"
                     )
                 }

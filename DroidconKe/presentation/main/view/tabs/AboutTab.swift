@@ -49,6 +49,7 @@ struct AboutTab: View {
                 }
                 .padding(.horizontal)
             }
+            .background(Color(.surfaceTint))
         }
     }
 }

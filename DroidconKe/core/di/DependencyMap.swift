@@ -90,6 +90,7 @@ struct DependencyMap {
 
         container.register(MainViewModel.self) { resolver in
             MainViewModel(
+                prefsRepo: resolver.resolve(PrefsRepo.self)!,
                 feedRepo: resolver.resolve(FeedRepoProtocol.self)!,
                 organizerRepo: resolver.resolve(OrganizerRepoProtocol.self)!,
                 sessionRepo: resolver.resolve(SessionRepoProtocol.self)!,

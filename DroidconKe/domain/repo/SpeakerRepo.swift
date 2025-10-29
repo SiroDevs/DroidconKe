@@ -6,7 +6,7 @@
 //
 
 protocol SpeakerRepoProtocol {
-    func fetchRemoteData() async throws -> [SpeakerEntity]
+    func fetchRemoteData(conType: ConFilter) async throws -> [SpeakerEntity]
     func fetchLocalData() -> [SpeakerEntity]
     func saveData(_ speakers: [SpeakerEntity])
     func clearAllData()
@@ -24,12 +24,38 @@ class SpeakerRepo: SpeakerRepoProtocol {
         self.speakerDm = speakerDm
     }
     
-    func fetchRemoteData() async throws -> [SpeakerEntity] {
+    func fetchRemoteData(conType: ConFilter) async throws -> [SpeakerEntity] {
+        switch conType {
+            case .all:
+                async let droidconTask = fetchDroidconSpeakers()
+                async let flutterconTask = fetchFlutterconSpeakers()
+                
+                let (droidconSpeakers, flutterconSpeakers) = try await (droidconTask, flutterconTask)
+                return droidconSpeakers + flutterconSpeakers
+                
+            case .droidcon:
+                return try await fetchDroidconSpeakers()
+                
+            case .fluttercon:
+                return try await fetchFlutterconSpeakers()
+        }
+    }
+
+    private func fetchDroidconSpeakers() async throws -> [SpeakerEntity] {
         let response: SpeakersRespDTO = try await apiService.fetch(
             endpoint: .speakers(eventSlug: AppSecrets.droidcon_slug, perPage: 100)
         )
         return response.data.map { dto in
             SpeakerMapper.dtoToEntity(dto, session: "", isDroidcon: true)
+        }
+    }
+
+    private func fetchFlutterconSpeakers() async throws -> [SpeakerEntity] {
+        let response: SpeakersRespDTO = try await apiService.fetch(
+            endpoint: .speakers(eventSlug: AppSecrets.fluttercon_slug, perPage: 100)
+        )
+        return response.data.map { dto in
+            SpeakerMapper.dtoToEntity(dto, session: "", isDroidcon: false)
         }
     }
 

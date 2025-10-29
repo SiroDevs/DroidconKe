@@ -8,6 +8,8 @@
 import Foundation
 
 final class MainViewModel: ObservableObject {
+    private let prefsRepo: PrefsRepo
+    private let netUtils: NetworkUtils
     private let feedRepo: FeedRepoProtocol
     private let organizerRepo: OrganizerRepoProtocol
     private let sessionRepo: SessionRepoProtocol
@@ -20,36 +22,56 @@ final class MainViewModel: ObservableObject {
     @Published var speakers: [SpeakerEntity] = []
     @Published var sponsors: [SponsorEntity] = []
     @Published var uiState: UiState = .idle
-
+    @Published var conType: ConFilter = .droidcon
 
     init(
+        prefsRepo: PrefsRepo,
+        netUtils: NetworkUtils = .shared,
         feedRepo: FeedRepoProtocol,
         organizerRepo: OrganizerRepoProtocol,
         sessionRepo: SessionRepoProtocol,
         speakerRepo: SpeakerRepoProtocol,
         sponsorRepo: SponsorRepoProtocol
     ) {
+        self.prefsRepo = prefsRepo
+        self.netUtils = netUtils
         self.feedRepo = feedRepo
         self.organizerRepo = organizerRepo
         self.sessionRepo = sessionRepo
         self.speakerRepo = speakerRepo
         self.sponsorRepo = sponsorRepo
+        self.conType = ConFilter(rawValue: prefsRepo.conType) ?? .droidcon
     }
 
-    func initializeData() {
-        Task {
+    func syncData() async {
+        Task { @MainActor in
+            let isOnline = await netUtils.checkNetworkAvailability()
+            if isOnline {
+                await fetchRemoteData()
+            } else {
+                await fetchLocalData()
+            }
+        }
+    }
+    
+    func updateConFilter(_ newFilter: ConFilter) {
+        conType = newFilter
+        prefsRepo.conType = newFilter.rawValue
+        prefsRepo.conTypeSet = true
+        
+        Task { @MainActor in
             await syncData()
         }
     }
 
     @MainActor
-    func syncData() async {
+    func fetchRemoteData() async {
         uiState = .loading
 
         do {
             async let organizersTask = organizerRepo.fetchRemoteData()
-            async let sessionsTask = sessionRepo.fetchRemoteData()
-            async let sponsorsTask = sponsorRepo.fetchRemoteData()
+            async let sessionsTask = sessionRepo.fetchRemoteData(conType: conType)
+            async let sponsorsTask = sponsorRepo.fetchRemoteData(conType: conType)
 
             let (remoteOrganizers, remoteSessions, remoteSponsors) = try await (
                 organizersTask,
@@ -68,21 +90,23 @@ final class MainViewModel: ObservableObject {
         } catch {
             uiState = .error("Failed: \(error.localizedDescription)")
 
+            print("❌ Syncing failed: \(error)")
             if sessions.isEmpty {
-                await fetchSessionsLocally()
+                await fetchLocalData()
             }
 
-            print("❌ Syncing failed: \(error)")
         }
     }
 
-    private func fetchSessionsLocally() async {
+    private func fetchLocalData() async {
+        uiState = .loading
         let localSessions = await Task.detached { self.sessionRepo.fetchLocalData() }.value
         let localSpeakers = await Task.detached { self.speakerRepo.fetchLocalData() }.value
 
         if !localSessions.isEmpty {
             sessions = localSessions
             speakers = localSpeakers
+            uiState = .loaded
         } else {
             print("No sessions found")
         }
@@ -98,4 +122,12 @@ final class MainViewModel: ObservableObject {
         let localSpeakers = await Task.detached { self.speakerRepo.fetchLocalData() }.value
         speakers = localSpeakers
     }
+}
+
+enum ConFilter: String, CaseIterable, Identifiable {
+    case all = "All Sessions"
+    case droidcon = "Droidcon Sessions"
+    case fluttercon = "FlutterCon Sessions"
+    
+    var id: String { rawValue }
 }

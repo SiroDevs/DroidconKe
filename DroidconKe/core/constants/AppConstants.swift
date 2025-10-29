@@ -11,12 +11,14 @@ struct AppConstants {
     static let appTitle = "DroidconKe"
     static let appCredits = "© Siro Devs"
     
+    static let videoUrl = "https://droidcon.co.ke/video/dcke25_report.mp4"
     static let baseUrl = "https://api.droidcon.co.ke/v1"
 }
 
 struct PrefConstants {
-    static let defaultEvent = "all"
-    static let eventType = "eventTypeKey"
+    static let defaultConType = "droidcon"
+    static let conTypeSet = "conTypeSetKey"
+    static let conType = "conTypeKey"
 }
 
 struct AppSecrets {

@@ -16,29 +16,45 @@ struct SessionTab: View {
     @State private var selectedRoom: String?
     @State private var selectedSessionType: String?
     
+    private var deduplicatedSessions: [SessionEntity] {
+        var seenSessions = Set<String>()
+        var uniqueSessions: [SessionEntity] = []
+        
+        for session in viewModel.sessions {
+            let identifier = session.title
+            
+            if !seenSessions.contains(identifier) {
+                seenSessions.insert(identifier)
+                uniqueSessions.append(session)
+            }
+        }
+        
+        return uniqueSessions
+    }
+
     private var availableDates: [String] {
-        let dates = Set(viewModel.sessions.map { $0.date })
+        let dates = Set(deduplicatedSessions.map { $0.date })
         return Array(dates).sorted()
     }
     
     private var availableLevels: [String] {
-        Array(Set(viewModel.sessions.map { $0.sessionLevel })).sorted()
+        Array(Set(deduplicatedSessions.map { $0.sessionLevel })).sorted()
     }
     
     private var availableTopics: [String] {
-        Array(Set(viewModel.sessions.map { $0.sessionCategory })).sorted()
+        Array(Set(deduplicatedSessions.map { $0.sessionCategory })).sorted()
     }
     
     private var availableRooms: [String] {
-        Array(Set(viewModel.sessions.flatMap { $0.rooms.map { $0.title } })).sorted()
+        Array(Set(deduplicatedSessions.flatMap { $0.rooms.map { $0.title } })).sorted()
     }
     
     private var availableSessionTypes: [String] {
-        Array(Set(viewModel.sessions.map { $0.sessionFormat })).sorted()
+        Array(Set(deduplicatedSessions.map { $0.sessionFormat })).sorted()
     }
     
     private var filteredSessions: [SessionEntity] {
-        viewModel.sessions.filter { session in
+        deduplicatedSessions.filter { session in
             let matchesDate = selectedDate.isEmpty || session.date == selectedDate
             let matchesLevel = selectedLevel == nil || session.sessionLevel == selectedLevel
             let matchesTopic = selectedTopic == nil || session.sessionCategory == selectedTopic
@@ -128,6 +144,7 @@ struct SessionTab: View {
             .onChange(of: viewModel.sessions) { _ in
                 setDefaultDate()
             }
+            .background(Color(.surfaceTint))
         }
     }
 }

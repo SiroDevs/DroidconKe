@@ -8,7 +8,7 @@
 import Foundation
 
 protocol SessionRepoProtocol {
-    func fetchRemoteData() async throws -> [SessionEntity]
+    func fetchRemoteData(conType: ConFilter) async throws -> [SessionEntity]
     func fetchLocalData() -> [SessionEntity]
 //    func fetchLocalDataBySpeaker() -> [SessionEntity]
     func saveData(_ sessions: [SessionEntity])
@@ -27,21 +27,55 @@ class SessionRepo: SessionRepoProtocol {
         self.sessionDm = sessionDm
     }
     
-    func fetchRemoteData() async throws -> [SessionEntity] {
+    func fetchRemoteData(conType: ConFilter) async throws -> [SessionEntity] {
+        switch conType {
+            case .all:
+                async let droidconTask = fetchDroidconSessions()
+                async let flutterconTask = fetchFlutterconSessions()
+                
+                let (droidconSessions, flutterconSessions) = try await (droidconTask, flutterconTask)
+                return droidconSessions + flutterconSessions
+                
+            case .droidcon:
+                return try await fetchDroidconSessions()
+                
+            case .fluttercon:
+                return try await fetchFlutterconSessions()
+        }
+    }
+
+    private func fetchDroidconSessions() async throws -> [SessionEntity] {
         let response: SessionsRespDTO = try await apiService.fetch(
             endpoint: .sessions(eventSlug: AppSecrets.droidcon_slug)
         )
         
-        var allSessions: [SessionEntity] = []
+        var droidconSessions: [SessionEntity] = []
         
         for (date, sessions) in response.data {
             let sessionEntities = sessions.map { dto in
                 SessionMapper.dtoToEntity(dto, date: date, isDroidcon: true)
             }
-            allSessions.append(contentsOf: sessionEntities)
+            droidconSessions.append(contentsOf: sessionEntities)
         }
         
-        return allSessions
+        return droidconSessions
+    }
+
+    private func fetchFlutterconSessions() async throws -> [SessionEntity] {
+        let response: SessionsRespDTO = try await apiService.fetch(
+            endpoint: .sessions(eventSlug: AppSecrets.fluttercon_slug)
+        )
+        
+        var flutterconSessions: [SessionEntity] = []
+        
+        for (date, sessions) in response.data {
+            let sessionEntities = sessions.map { dto in
+                SessionMapper.dtoToEntity(dto, date: date, isDroidcon: false)
+            }
+            flutterconSessions.append(contentsOf: sessionEntities)
+        }
+        
+        return flutterconSessions
     }
 
     func fetchLocalData() -> [SessionEntity] {

@@ -8,7 +8,9 @@
 import Foundation
 
 protocol PrefsRepoProtocol {
-    var eventType: String { get set }
+    var conTypeSet: Bool { get set }
+    var conType: String { get set }
+    var conFilter: ConFilter { get set }
     
     func resetPrefs()
 }
@@ -20,13 +22,29 @@ class PrefsRepo: PrefsRepoProtocol {
         self.userDefaults = userDefaults
     }
     
-    var eventType: String {
-        get { userDefaults.string(forKey: PrefConstants.eventType) ?? PrefConstants.defaultEvent }
-        set { userDefaults.set(newValue, forKey: PrefConstants.eventType) }
+    var conTypeSet: Bool {
+        get { userDefaults.bool(forKey: PrefConstants.conTypeSet) }
+        set { userDefaults.set(newValue, forKey: PrefConstants.conTypeSet) }
+    }
+    
+    var conType: String {
+        get { userDefaults.string(forKey: PrefConstants.conType) ?? PrefConstants.defaultConType }
+        set { userDefaults.set(newValue, forKey: PrefConstants.conType) }
+    }
+    
+    var conFilter: ConFilter {
+        get {
+            let rawValue = userDefaults.string(forKey: PrefConstants.conType) ?? PrefConstants.defaultConType
+            return ConFilter(rawValue: rawValue) ?? .all
+        }
+        set {
+            userDefaults.set(newValue.rawValue, forKey: PrefConstants.conType)
+            conTypeSet = true
+        }
     }
     
     func resetPrefs() {
-//        installDate = ""
+        conType = PrefConstants.defaultConType
+        conTypeSet = false
     }
-    
 }

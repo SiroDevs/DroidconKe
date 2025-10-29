@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
 
 class DateUtils {
     static func formatTime(_ timeString: String) -> String {

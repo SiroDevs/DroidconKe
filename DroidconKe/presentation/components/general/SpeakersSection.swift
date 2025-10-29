@@ -1,5 +1,5 @@
 //
-//  SessionSection.swift
+//  SpeakersSection.swift
 //  DroidconKe
 //
 //  Created by @sirodevs on 23/10/2025.
@@ -7,36 +7,46 @@
 
 import SwiftUI
 
-struct SessionSection: View {
-    let sessions: [SessionEntity]
+struct SpeakersSection: View {
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    let speakers: [SpeakerEntity]
     
-    private var randomSessions: [SessionEntity] {
-        let filteredSessions = sessions.filter { $0.sessionFormat.isEmpty == false }
-        
-        
-        let sessionsToUse = filteredSessions.isEmpty ? sessions : filteredSessions
-        
-        return Array(sessionsToUse.shuffled().prefix(4))
+    let isIpad = UIDevice.current.userInterfaceIdiom == .pad
+    private var randomSpeakers: [SpeakerEntity] {
+        Array(speakers.shuffled().prefix(isIpad ? 10 : 5))
+    }
+    
+    private var isLandscape: Bool {
+        verticalSizeClass == .compact
+    }
+    
+    private var size: CGFloat {
+        if isIpad {
+            return 200
+        } else {
+            return isLandscape ? 120 : 85
+        }
     }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text("Sessions")
+                Text("Speakers")
                     .font(.title3.bold())
                     .foregroundColor(.onPrimary)
 
                 Spacer()
 
-                if !sessions.isEmpty {
-                    Button(action: {
-                    }) {
+                if !speakers.isEmpty {
+                    NavigationLink(
+                        destination: SpeakersView(speakers: speakers))
+                    {
                         HStack(spacing: 6) {
                             Text("View All")
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
                                 .foregroundColor(.onPrimary)
-                            Text("+\(sessions.count)")
+                            Text("+\(speakers.count)")
                                 .font(.subheadline)
                                 .foregroundColor(.onPrimary)
                                 .padding(.horizontal, 6)
@@ -52,11 +62,13 @@ struct SessionSection: View {
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
-                    ForEach(randomSessions) { session in
+                    ForEach(randomSpeakers) { speaker in
                         NavigationLink {
-                            SessionView(session: session)
+                            SpeakerView(speaker: speaker)
                         } label: {
-                            SessionCard(session: session)
+                            SpeakerCard(
+                                speaker: speaker, size: size
+                            )
                         }
                     }
                 }
@@ -68,7 +80,7 @@ struct SessionSection: View {
 }
 
 #Preview {
-    SessionSection(
-        sessions: SessionEntity.sampleSessions
+    SpeakersSection(
+        speakers: SpeakerEntity.sampleSpeakers
     )
 }

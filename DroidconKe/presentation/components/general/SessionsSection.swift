@@ -1,5 +1,5 @@
 //
-//  SpeakerSection.swift
+//  SessionsSection.swift
 //  DroidconKe
 //
 //  Created by @sirodevs on 23/10/2025.
@@ -7,31 +7,38 @@
 
 import SwiftUI
 
-struct SpeakerSection: View {
-    let speakers: [SpeakerEntity]
+struct SessionsSection: View {
+    let sessions: [SessionEntity]
+    @Binding var selectedTab: Tabbed
     
-    private var randomSpeakers: [SpeakerEntity] {
-        Array(speakers.shuffled().prefix(7))
+    private var randomSessions: [SessionEntity] {
+        let filteredSessions = sessions.filter { $0.sessionFormat.isEmpty == false }
+        
+        
+        let sessionsToUse = filteredSessions.isEmpty ? sessions : filteredSessions
+        
+        return Array(sessionsToUse.shuffled().prefix(4))
     }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text("Speakers")
+                Text("Sessions")
                     .font(.title3.bold())
                     .foregroundColor(.onPrimary)
 
                 Spacer()
 
-                if !speakers.isEmpty {
+                if !sessions.isEmpty {
                     Button(action: {
+                        selectedTab = .sessions
                     }) {
                         HStack(spacing: 6) {
                             Text("View All")
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
                                 .foregroundColor(.onPrimary)
-                            Text("+\(speakers.count)")
+                            Text("+\(sessions.count)")
                                 .font(.subheadline)
                                 .foregroundColor(.onPrimary)
                                 .padding(.horizontal, 6)
@@ -47,11 +54,11 @@ struct SpeakerSection: View {
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
-                    ForEach(randomSpeakers) { speaker in
+                    ForEach(randomSessions) { session in
                         NavigationLink {
-                            SpeakerView(speaker: speaker)
+                            SessionView(session: session)
                         } label: {
-                            SpeakerCard(speaker: speaker)
+                            SessionCard(session: session)
                         }
                     }
                 }
@@ -63,7 +70,8 @@ struct SpeakerSection: View {
 }
 
 #Preview {
-    SpeakerSection(
-        speakers: SpeakerEntity.sampleSpeakers
+    SessionsSection(
+        sessions: SessionEntity.sampleSessions,
+        selectedTab: .constant(.about),
     )
 }

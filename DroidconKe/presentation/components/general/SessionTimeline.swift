@@ -34,23 +34,14 @@ struct TimeSlotSection: View {
                     NavigationLink {
                         SessionView(session: session)
                     } label: {
-                        TimelineCard(session: session)
+                        TimelineCard(
+                            isCommonSession: session.sessionFormat.isEmpty && session.sessionLevel.isEmpty && session.sessionCategory.isEmpty,
+                            session: session
+                        )
                     }
                 }
             }
         }
-    }
-    
-    private func formatTime(_ timeString: String) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm:ss"
-        
-        if let date = formatter.date(from: timeString) {
-            formatter.dateFormat = "h:mm a"
-            return formatter.string(from: date)
-        }
-        
-        return timeString
     }
 }
 

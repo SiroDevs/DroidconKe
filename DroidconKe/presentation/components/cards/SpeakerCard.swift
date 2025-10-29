@@ -9,8 +9,8 @@ import SwiftUI
 
 struct SpeakerCard: View {
     let speaker: SpeakerEntity
+    let size: CGFloat
     var borderColor: Color = .cyan
-    var size: CGFloat = 70
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -19,7 +19,10 @@ struct SpeakerCard: View {
                     .resizable()
                     .scaledToFill()
             } placeholder: {
-                Color.gray.opacity(0.2)
+                Image(systemName: "person.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundColor(.secondary)
             }
             .frame(width: size, height: size)
             .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -29,18 +32,18 @@ struct SpeakerCard: View {
             )
             
             Text(speaker.name)
-                .font(.system(size: 13, weight: .medium))
+                .font(.system(size: size / 9, weight: .medium))
                 .multilineTextAlignment(.center)
                 .foregroundColor(.primary)
                 .lineLimit(2)
-                .frame(width: size + 10, height: size/2)
+                .frame(width: size + 10, height: size / 2)
                 .fixedSize(horizontal: false, vertical: true)
         }
     }
 }
 
 #Preview {
-    SpeakerSection(
+    SpeakersSection(
         speakers: SpeakerEntity.sampleSpeakers
     )
 }

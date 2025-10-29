@@ -18,7 +18,7 @@ struct OrganizersSection: View {
     ]
     
     var body: some View {
-        VStack(alignment: .center, spacing: 20) {
+        VStack(alignment: .center, spacing: 10) {
             Text("Organized by")
                 .font(.title2)
                 .fontWeight(.semibold)
@@ -30,7 +30,7 @@ struct OrganizersSection: View {
                 }
             }
         }
-        .padding(20)
+        .padding(10)
         .background(
             RoundedRectangle(cornerRadius: 16)
                 .fill(Color.gray.opacity(0.15))

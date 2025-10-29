@@ -129,6 +129,7 @@ struct TestTab: View {
             .onChange(of: sessions) { _ in
                 setDefaultDate()
             }
+            .background(Color(.surfaceVariant))
         }
     }
 }

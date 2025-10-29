@@ -10,15 +10,30 @@ import SwiftUI
 struct SettingsTab: View {
     @ObservedObject var viewModel: MainViewModel
     @EnvironmentObject var themeManager: ThemeManager
+    @State private var conType: ConFilter = .all
+    @Environment(\.dismiss) private var dismiss
+    let isPresentedAsSheet: Bool
     
-    @State private var showPaywall: Bool = false
-    @State private var showResetAlert: Bool = false
-    @State private var restartTheApp = false
-
     var body: some View {
         NavigationStack {
             Form {
-                SettingsSection(header: "App Theme") {
+                SettingsSection(header: "Select Session Types") {
+                    ForEach(ConFilter.allCases) { filter in
+                        SettingsRow(
+                            title: filter.rawValue,
+                            foregroundColor: .primary
+                        ) {
+                            viewModel.updateConFilter(filter)
+                        } trailing: {
+                            if viewModel.conType == filter {
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(.blue)
+                            }
+                        }
+                    }
+                }
+
+                SettingsSection(header: "Select an App Theme") {
                     Picker("Choose Theme", selection: $themeManager.selectedTheme) {
                         ForEach(AppThemeMode.allCases) { mode in
                             Text(mode.displayName).tag(mode)
@@ -26,25 +41,19 @@ struct SettingsTab: View {
                     }
                     .pickerStyle(.inline)
                 }
-
-//                SettingsSection(header: "Maoni") {
-//                    SettingsRow(
-//                        systemImage: "text.badge.star",
-//                        title: L10n.leaveReview,
-//                        subtitle: L10n.leaveReviewDesc,
-//                        action: viewModel.promptReview
-//                    )
-//                    SettingsRow(
-//                        systemImage: "envelope",
-//                        title: L10n.contactUs,
-//                        subtitle: L10n.contactUsDesc,
-//                        action: AppUtilities.sendEmail
-//                    )
-//                }
-
             }
+            .background(Color(.surfaceTint))
             .navigationTitle("Settings")
             .toolbarBackground(.regularMaterial, for: .navigationBar)
+            .toolbar {
+                if isPresentedAsSheet {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("Done") {
+                            dismiss()
+                        }
+                    }
+                }
+            }
         }
     }
 }
